@@ -1,27 +1,42 @@
 package application;
 
-public class Donut extends MenuItem implements Customizable {
-    static enum Types {
-        YEAST(1.39), CAKE(1.59), HOLES(0.33);
+public class Donut extends MenuItem {
+    private types selectedType;
+    static enum types {
+        YEAST(1.39, "Yeast"), CAKE(1.59, "Cake"), HOLES(0.33, "Holes");
 
-        private final double value;
-        Types(double value) {
-            this.value = value;
+        private final double price;
+        private final String name;
+        types(double price, String name) {
+            this.price = price;
+            this.name = name;
         }
 
-        public double getPrice() {
-            return value;
+//        public double getPrice() {
+//            return price;
+//        }
+    }
+
+    Donut() {
+        super();
+    }
+
+    public boolean setType(Object obj) {
+        // handle size
+        if(obj instanceof types) {
+            // cast to sizes enum
+            types selectedType = (types) obj;
+            // if not already selected
+            if(this.selectedType != selectedType) {
+                // remove previous size from menuItem price
+                super.addToItemPrice(-this.selectedType.price);
+                // set new selected size
+                this.selectedType = selectedType;
+                // add newly selected size to menuItem price
+                super.addToItemPrice(selectedType.price);
+            }
+            return true;
         }
-    }
-
-    Donut(Types type) {
-        super(type.getPrice());
-    }
-
-    public boolean add(Object obj) {
-        return true;
-    }
-    public boolean remove(Object obj) {
-        return true;
+        return false;
     }
 }

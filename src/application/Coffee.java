@@ -1,9 +1,14 @@
 package application;
 
+import java.util.HashSet;
 import java.util.Set;
 
 public class Coffee extends MenuItem implements Customizable {
-    static enum sizes {
+    private Set<addIns> selectedAddIns = new HashSet();
+    private sizes selectedSize;
+    static final double ADD_IN_PRICE = 0.50;
+
+    public enum sizes {
         SHORT(1.99, "Short"),
         TALL(2.49, "Tall"),
         GRANDE(2.99, "Grande"),
@@ -26,7 +31,7 @@ public class Coffee extends MenuItem implements Customizable {
         }
     }
 
-    static enum addIns {
+    public enum addIns {
         CREAM("Cream"),
         SYRUP("Syrup"),
         MILK("Milk"),
@@ -44,10 +49,6 @@ public class Coffee extends MenuItem implements Customizable {
         }
     }
 
-    private final double ADD_IN_PRICE = 0.50;
-    private Set<addIns> selectedAddIns;
-    private sizes selectedSize;
-
     Coffee() {
         super();
     }
@@ -58,7 +59,7 @@ public class Coffee extends MenuItem implements Customizable {
             // cast to addIns enum
             addIns selectedAddIn = (addIns) obj;
             // if not already selected
-            if(!selectedAddIns.contains(selectedAddIn)) {
+            if(!this.selectedAddIns.contains(selectedAddIn)) {
                 // add to set
                 this.selectedAddIns.add(selectedAddIn);
                 // add to price
@@ -79,8 +80,8 @@ public class Coffee extends MenuItem implements Customizable {
                 this.selectedAddIns.remove(selectedAddIn);
                 // remove from menuItem price
                 super.addToItemPrice(-ADD_IN_PRICE);
+                return true;
             }
-            return true;
         }
         return false;
     }
@@ -90,8 +91,15 @@ public class Coffee extends MenuItem implements Customizable {
         if(obj instanceof sizes) {
             // cast to sizes enum
             sizes selectedSize = (sizes) obj;
+            // if null
+            if(this.selectedSize == null) {
+                // set new selected size
+                this.selectedSize = selectedSize;
+                // add newly selected size to menuItem price
+                super.addToItemPrice(selectedSize.price);
+            }
             // if not already selected
-            if(this.selectedSize != selectedSize) {
+            else if( this.selectedSize != selectedSize) {
                 // remove previous size from menuItem price
                 super.addToItemPrice(-this.selectedSize.price);
                 // set new selected size
