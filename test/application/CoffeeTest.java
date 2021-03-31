@@ -1,12 +1,12 @@
 package application;
 
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
 public class CoffeeTest {
 
     @Test
-    void setSize() {
+    public void setSize() {
         Coffee testCoffee = new Coffee();
         // Test Case 1: set short size and check price
         Assertions.assertTrue(testCoffee.setSize(Coffee.sizes.SHORT));
@@ -23,10 +23,14 @@ public class CoffeeTest {
         // Test Case 4: set venti size
         Assertions.assertTrue(testCoffee.setSize(Coffee.sizes.VENTI));
         Assertions.assertTrue(testCoffee.getItemPrice() == Coffee.sizes.VENTI.getPrice());
+
+        // Test Case 5: set invalid size, check price remains the same
+        Assertions.assertFalse(testCoffee.setSize(new Object()));
+        Assertions.assertTrue(testCoffee.getItemPrice() == Coffee.sizes.VENTI.getPrice());
     }
 
     @Test
-    void add() {
+    public void add() {
         Coffee testCoffee = new Coffee();
         double expectedPrice = 0;
 
@@ -61,7 +65,7 @@ public class CoffeeTest {
     }
 
     @Test
-    void remove() {
+    public void remove() {
         Coffee testCoffee = new Coffee();
 
         testCoffee.add(Coffee.addIns.CREAM);
