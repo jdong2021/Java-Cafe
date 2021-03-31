@@ -7,6 +7,7 @@ import org.junit.runners.Suite;
 @Suite.SuiteClasses(value={
         CoffeeTest.class,
         DonutTest.class,
+        StoreOrdersTest.class,
 })
 public class TestSuite {
     // This class remains empty, it is used only as a holder for the above annotations

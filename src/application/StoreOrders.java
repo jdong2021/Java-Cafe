@@ -1,10 +1,25 @@
 package application;
 
+import javafx.collections.FXCollections;
+import javafx.collections.MapChangeListener;
+import javafx.collections.ObservableMap;
+
 import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 public class StoreOrders implements Customizable {
-    private HashMap<UUID, Order> orders = new HashMap();
+    // private Map<UUID, Order> orders = new HashMap<>();
+    // public ObservableMap<UUID, Order> observableOrders = FXCollections.observableHashMap();
+    private ObservableMap<UUID, Order> orders = FXCollections.observableHashMap();
+
+    StoreOrders() {
+        // orders.addListener((MapChangeListener) change -> System.out.println("change! "));
+    }
+
+    StoreOrders(javafx.collections.MapChangeListener<UUID, Order> listener) {
+        orders.addListener(listener);
+    }
 
     public boolean add(Object obj) {
         // type check
