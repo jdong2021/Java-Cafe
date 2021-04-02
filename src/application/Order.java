@@ -7,9 +7,18 @@ public class Order implements Customizable {
     private final UUID orderNumber;
     private HashMap<UUID, MenuItem> currentOrder = new HashMap();
 
-    Order() {
+    public Order() {
         orderNumber = UUID.randomUUID();
     }
+
+
+    // maybe i should make a add method along with a quantity?
+    public void addMultipleDonuts(Object obj, int quantity){
+        for(int i =0; i <quantity;i++){
+            add(obj);
+        }
+    }
+
 
     public boolean add(Object obj) {
         // type check
@@ -36,6 +45,14 @@ public class Order implements Customizable {
             }
         }
         return false;
+    }
+
+    @Override
+    public String toString() {
+        return "Order{" +
+                "orderNumber=" + orderNumber +
+                ", currentOrder=" + currentOrder +
+                '}';
     }
 
     public UUID getOrderNumber() {

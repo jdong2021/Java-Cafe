@@ -17,7 +17,7 @@ public class Donut extends MenuItem {
         }
     }
 
-    Donut() {
+    public Donut() {
         super();
     }
 
