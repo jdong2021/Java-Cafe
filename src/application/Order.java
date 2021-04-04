@@ -13,13 +13,21 @@ public class Order implements Customizable {
 
 
     // maybe i should make a add method along with a quantity?
+    //adding multiple menuitems to order
     public void addMultipleDonuts(Object obj, int quantity){
         for(int i =0; i <quantity;i++){
             add(obj);
         }
     }
 
+    //removing multiple menuitems to order
+    public void removeMultipleDonuts(Object obj, int quantity){
+        for(int i =0; i < quantity; i++){
+            remove(obj);
+        }
+    }
 
+    // adding menuitem to order
     public boolean add(Object obj) {
         // type check
         if(obj instanceof MenuItem) {

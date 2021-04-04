@@ -40,6 +40,9 @@ public class orderingDonutsController implements Initializable {
     private Button addDonutBtn;
 
     @FXML
+    private Button removeDonutBtn;
+
+    @FXML
     private TextField subTotalField;
 
 
@@ -65,13 +68,16 @@ public class orderingDonutsController implements Initializable {
                 displayAlert("Error With Order", "Please choose Donut Type");
                 return;
             }
+
+
             donutPickedlistView.getItems().addAll(currentDonutFlavor + " " +currentDonutQuantity);
-           if(currentDonutType.equals("Yeast")) {
+
+            if(currentDonutType.equals("Yeast")) {
                tempCurrentOrder = new Order();
                tempCurrentDonut = new Donut();
                tempCurrentDonut.setType(Donut.types.YEAST);
                tempCurrentOrder.addMultipleDonuts(tempCurrentDonut,currentQuantity);
-               adjustSubtotal();
+               adjustSubtotalIncrease();
 
                subTotalField.setText(Double.toString(subtotal));
            }
@@ -80,7 +86,7 @@ public class orderingDonutsController implements Initializable {
                tempCurrentDonut = new Donut();
                tempCurrentDonut.setType(Donut.types.CAKE);
                tempCurrentOrder.addMultipleDonuts(tempCurrentDonut,currentQuantity);
-               adjustSubtotal();
+               adjustSubtotalIncrease();
 
                subTotalField.setText(Double.toString(subtotal));
            }
@@ -90,11 +96,24 @@ public class orderingDonutsController implements Initializable {
                tempCurrentDonut.setType(Donut.types.HOLES);
 
                tempCurrentOrder.addMultipleDonuts(tempCurrentDonut,currentQuantity);
-               adjustSubtotal();
+               adjustSubtotalIncrease();
                subTotalField.setText(Double.toString(subtotal));
            }
 
 
+
+    }
+
+    @FXML
+    private void removeDonutFromTemp(){
+        // first remove it from displaying on listview object
+        String donutToRemove = donutPickedlistView.getSelectionModel().getSelectedItem();
+
+        adjustSubtotalDecrease();
+        subTotalField.setText(Double.toString(subtotal));
+
+
+        donutPickedlistView.getItems().remove(donutToRemove);
 
     }
 
@@ -106,7 +125,7 @@ public class orderingDonutsController implements Initializable {
     }
 
 
-    private void adjustSubtotal(){
+    private void adjustSubtotalIncrease(){
 
         String currentDonutQuantity = donutQuantityComboBox.getSelectionModel().getSelectedItem();
         int currentQuantity = Integer.parseInt(currentDonutQuantity);
@@ -114,6 +133,40 @@ public class orderingDonutsController implements Initializable {
         for(int i =0; i <currentQuantity; i++){
             subtotal = subtotal + tempCurrentDonut.getItemPrice();
             subtotal = RoundTo2Decimals(subtotal);
+
+        }
+    }
+
+    private void adjustSubtotalDecrease(){
+        String donutToRemove = donutPickedlistView.getSelectionModel().getSelectedItem();
+        String[] arrOfStr = donutToRemove.split(" ");
+        String donutToRemoveFlavor = arrOfStr[0];
+        int quantity = Integer.valueOf(arrOfStr[1]);
+
+        //if its a cake donut
+        if(donutToRemoveFlavor.equals("Glazed") || donutToRemoveFlavor.equals("Chocolate")
+                || donutToRemoveFlavor.equals("Strawberry")){
+            for(int i =0; i <quantity; i++){
+                subtotal = subtotal - Donut.types.CAKE.getPrice();
+                subtotal = RoundTo2Decimals(subtotal);
+
+            }
+
+        }
+        else if (donutToRemoveFlavor.equals("Jelly") ||donutToRemoveFlavor.equals("VanillaFrosted") || donutToRemoveFlavor.equals("BostonCreme") ){
+            for(int i =0; i <quantity; i++){
+                subtotal = subtotal - Donut.types.YEAST.getPrice();
+                subtotal = RoundTo2Decimals(subtotal);
+
+            }
+
+        }
+        else if (donutToRemoveFlavor.equals("Powdered") ||donutToRemoveFlavor.equals("Cinnamon") || donutToRemoveFlavor.equals("Pumpkin") ){
+            for(int i =0; i <quantity; i++){
+                subtotal = subtotal - Donut.types.HOLES.getPrice();
+                subtotal = RoundTo2Decimals(subtotal);
+
+            }
 
         }
     }
@@ -167,7 +220,7 @@ public class orderingDonutsController implements Initializable {
         }
         else if(donutTypeComboBox.getValue().equals("Yeast")) {
             donutlistView.getItems().clear();
-            donutlistView.getItems().addAll("Jelly", "Vanilla Frosted", "Boston Creme");
+            donutlistView.getItems().addAll("Jelly", "VanillaFrosted", "BostonCreme");
         }
         else if(donutTypeComboBox.getValue().equals("Holes")) {
             donutlistView.getItems().clear();

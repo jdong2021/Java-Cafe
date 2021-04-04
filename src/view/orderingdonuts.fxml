@@ -53,7 +53,7 @@
                   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Donuts you have chosen" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM" />
                   <ComboBox fx:id="donutQuantityComboBox" prefHeight="26.0" prefWidth="131.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP" />
                   <Button fx:id="addDonutBtn" mnemonicParsing="false" onAction="#addDonutToTemp" text="&gt;&gt;" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-                  <Button mnemonicParsing="false" text="&lt;&lt;" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" />
+                  <Button fx:id="removeDonutBtn" mnemonicParsing="false" onAction="#removeDonutFromTemp" text="&lt;&lt;" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" />
                   <TextField fx:id="subTotalField" prefHeight="26.0" prefWidth="159.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Subtotal" wrappingWidth="55.596435546875" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
                   <Button mnemonicParsing="false" text="Add to Order" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
