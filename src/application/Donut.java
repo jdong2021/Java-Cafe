@@ -1,9 +1,13 @@
 package application;
 
+import java.util.Objects;
+
 public class Donut extends MenuItem {
     private types selectedType;
     public enum types {
-        YEAST(1.39, "Yeast"), CAKE(1.59, "Cake"), HOLES(0.33, "Holes");
+        YEAST(1.39, "Yeast"),
+        CAKE(1.59, "Cake"),
+        HOLES(0.33, "Holes");
 
         private final double price;
         private final String name;
@@ -19,6 +23,15 @@ public class Donut extends MenuItem {
 
     Donut() {
         super();
+    }
+
+    @Override
+    protected double itemPrice() {
+        double itemPrice = 0;
+        if(!Objects.isNull(selectedType)) {
+            itemPrice += selectedType.price;
+        }
+        return itemPrice;
     }
 
     public boolean setType(Object obj) {

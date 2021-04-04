@@ -7,6 +7,7 @@ import org.junit.runners.Suite;
 @Suite.SuiteClasses(value={
         CoffeeTest.class,
         DonutTest.class,
+        OrderTest.class,
         StoreOrdersTest.class,
 })
 public class TestSuite {
