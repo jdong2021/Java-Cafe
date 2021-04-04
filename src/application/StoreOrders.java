@@ -7,6 +7,7 @@ import javafx.collections.ObservableMap;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.Arrays;
 
 public class StoreOrders implements Customizable {
     // private Map<UUID, Order> orders = new HashMap<>();
@@ -46,5 +47,25 @@ public class StoreOrders implements Customizable {
             }
         }
         return false;
+    }
+
+    public void printAllStoreOrders(){
+        System.out.println(Arrays.asList(this));
+    }
+
+    public static void main (String args[]){
+        StoreOrders mystoreorders = new StoreOrders();
+
+        //create my first order
+        Order o1 = new Order();
+        //this order will contain a tall coffee with cream
+        Coffee c1 = new Coffee();
+        c1.setSize(Coffee.sizes.TALL);
+        c1.add(Coffee.addIns.CREAM);
+        //now add said coffee to order
+        o1.add(c1);
+        //now add my first order to storeordres
+        mystoreorders.add(o1);
+        mystoreorders.orders.get(o1.getOrderNumber());
     }
 }

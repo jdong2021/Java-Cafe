@@ -111,4 +111,12 @@ public class Coffee extends MenuItem implements Customizable {
         }
         return false;
     }
+
+    @Override
+    public String toString() {
+        return "Coffee{" +
+                "selectedAddIns=" + selectedAddIns +
+                ", selectedSize=" + selectedSize +
+                '}';
+    }
 }
