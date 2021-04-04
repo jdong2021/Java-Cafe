@@ -17,6 +17,13 @@ public class Order implements Customizable {
         currentOrder.addListener(listener);
     }
 
+    public double getOrderSubtotal() {
+        double subTotal = 0;
+        for(MenuItem item : currentOrder) {
+            subTotal += item.itemPrice();
+        }
+        return subTotal;
+    }
 
     // maybe i should make a add method along with a quantity?
     //adding multiple menuitems to order

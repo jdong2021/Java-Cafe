@@ -3,34 +3,7 @@ package application;
 import java.util.Objects;
 
 public class Donut extends MenuItem {
-    private types selectedType;
-    public enum types {
-        YEAST(1.39, "Yeast"),
-        CAKE(1.59, "Cake"),
-        HOLES(0.33, "Holes");
-
-        private final double price;
-        private final String name;
-        types(double price, String name) {
-            this.price = price;
-            this.name = name;
-        }
-
-        public double getPrice() {
-            return price;
-        }
-    }
-
-//    public enum flavors {
-//        YEAST(types.YEAST, ["Something","else","another"])
-//
-//        private final types type;
-//        private final String[] flavors;
-//        flavors(types type, String[] flavors) {
-//            this.type = type;
-//            this.flavors = flavors;
-//        }
-//    }
+    private DonutType.Flavor selectedDonut;
 
     public Donut() {
         super();
@@ -39,35 +12,29 @@ public class Donut extends MenuItem {
     @Override
     public double itemPrice() {
         double itemPrice = 0;
-        if(!Objects.isNull(selectedType)) {
-            itemPrice += selectedType.price;
+        if(!Objects.isNull(selectedDonut)) {
+            itemPrice += selectedDonut.getPrice();
         }
         return itemPrice;
     }
 
-    public boolean setType(Object obj) {
-        // handle size
-        if(obj instanceof types) {
-            // cast to sizes enum
-            types selectedType = (types) obj;
-            // if null
-            if(this.selectedType == null) {
-                // set new selected size
-                this.selectedType = selectedType;
-                // add newly selected size to menuItem price
-                super.addToItemPrice(selectedType.price);
-            }
-            // if not already selected
-            else if(this.selectedType != selectedType) {
-                // remove previous size from menuItem price
-                super.addToItemPrice(-this.selectedType.price);
-                // set new selected size
-                this.selectedType = selectedType;
-                // add newly selected size to menuItem price
-                super.addToItemPrice(selectedType.price);
-            }
-            return true;
+    public boolean setType(DonutType.Flavor selection) {
+        // handle null
+        if(Objects.isNull(selectedDonut)) {
+            // set new selected size
+            this.selectedDonut = selection;
+            // add newly selected size to menuItem price
+            super.addToItemPrice(selectedDonut.getPrice());
         }
-        return false;
+        // only change if not the currently selected type
+        else if(this.selectedDonut != selection) {
+            // remove previous selection from menuItem price
+            super.addToItemPrice(-this.selectedDonut.getPrice());
+            // set new selected size
+            this.selectedDonut = selection;
+            // add newly selected size to menuItem price
+            super.addToItemPrice(selectedDonut.getPrice());
+        }
+        return true;
     }
 }
