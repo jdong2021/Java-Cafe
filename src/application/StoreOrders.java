@@ -1,6 +1,7 @@
 package application;
 
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.collections.MapChangeListener;
 import javafx.collections.ObservableMap;
 
@@ -10,15 +11,11 @@ import java.util.UUID;
 import java.util.Arrays;
 
 public class StoreOrders implements Customizable {
-    // private Map<UUID, Order> orders = new HashMap<>();
-    // public ObservableMap<UUID, Order> observableOrders = FXCollections.observableHashMap();
-    private ObservableMap<UUID, Order> orders = FXCollections.observableHashMap();
+    private ObservableList<Order> orders = FXCollections.observableArrayList();
 
-    StoreOrders() {
-        // orders.addListener((MapChangeListener) change -> System.out.println("change! "));
-    }
+    public StoreOrders() { }
 
-    StoreOrders(javafx.collections.MapChangeListener<UUID, Order> listener) {
+    public StoreOrders(javafx.collections.ListChangeListener<Order> listener) {
         orders.addListener(listener);
     }
 
@@ -27,9 +24,12 @@ public class StoreOrders implements Customizable {
         if(obj instanceof Order) {
             // cast
             Order NEW_ORDER = (Order) obj;
-            // add to current order
-            orders.put(NEW_ORDER.getOrderNumber(), NEW_ORDER);
-            return true;
+            // if not already added
+            if(!orders.contains(NEW_ORDER)) {
+                // add to current order
+                orders.add(NEW_ORDER);
+                return true;
+            }
         }
         return false;
     }
@@ -40,32 +40,36 @@ public class StoreOrders implements Customizable {
             // cast
             final Order TARGET_ORDER = (Order) obj;
             // check if in current order
-            if(orders.containsKey(TARGET_ORDER.getOrderNumber())) {
+            if(orders.contains(TARGET_ORDER)) {
                 // remove from current order
-                orders.remove(TARGET_ORDER.getOrderNumber());
+                orders.remove(TARGET_ORDER);
                 return true;
             }
         }
         return false;
     }
 
+    public ObservableList<Order> getOrders() {
+        return orders;
+    }
+
     public void printAllStoreOrders(){
         System.out.println(Arrays.asList(this));
     }
 
-    public static void main (String args[]){
-        StoreOrders mystoreorders = new StoreOrders();
-
-        //create my first order
-        Order o1 = new Order();
-        //this order will contain a tall coffee with cream
-        Coffee c1 = new Coffee();
-        c1.setSize(Coffee.sizes.TALL);
-        c1.add(Coffee.addIns.CREAM);
-        //now add said coffee to order
-        o1.add(c1);
-        //now add my first order to storeordres
-        mystoreorders.add(o1);
-        mystoreorders.orders.get(o1.getOrderNumber());
-    }
+//    public static void main (String args[]){
+//        StoreOrders mystoreorders = new StoreOrders();
+//
+//        //create my first order
+//        Order o1 = new Order();
+//        //this order will contain a tall coffee with cream
+//        Coffee c1 = new Coffee();
+//        c1.setSize(Coffee.sizes.TALL);
+//        c1.add(Coffee.addIns.CREAM);
+//        //now add said coffee to order
+//        o1.add(c1);
+//        //now add my first order to storeordres
+//        mystoreorders.add(o1);
+//        mystoreorders.orders.get(o1.getOrderNumber());
+//    }
 }

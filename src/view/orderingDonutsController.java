@@ -21,10 +21,6 @@ public class orderingDonutsController implements Initializable {
     private double subtotal =0 ;
     private Donut tempCurrentDonut;
 
-
-
-
-
     @FXML
     private ListView<String> donutPickedlistView;
     @FXML
@@ -72,7 +68,7 @@ public class orderingDonutsController implements Initializable {
 
             donutPickedlistView.getItems().addAll(currentDonutFlavor + " " +currentDonutQuantity);
 
-            if(currentDonutType.equals("Yeast")) {
+            if(currentDonutType.equals(Donut.types.YEAST.name())) {
                tempCurrentOrder = new Order();
                tempCurrentDonut = new Donut();
                tempCurrentDonut.setType(Donut.types.YEAST);
@@ -131,7 +127,7 @@ public class orderingDonutsController implements Initializable {
         int currentQuantity = Integer.parseInt(currentDonutQuantity);
 
         for(int i =0; i <currentQuantity; i++){
-            subtotal = subtotal + tempCurrentDonut.getItemPrice();
+            subtotal = subtotal + tempCurrentDonut.itemPrice();
             subtotal = RoundTo2Decimals(subtotal);
 
         }

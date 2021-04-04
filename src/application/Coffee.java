@@ -1,12 +1,12 @@
 package application;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 public class Coffee extends MenuItem implements Customizable {
     private Set<addIns> selectedAddIns = new HashSet();
     private sizes selectedSize;
-    static final double ADD_IN_PRICE = 0.50;
 
     public enum sizes {
         SHORT(1.99, "Short"),
@@ -51,6 +51,23 @@ public class Coffee extends MenuItem implements Customizable {
 
     Coffee() {
         super();
+    }
+
+    @Override
+    public double itemPrice() {
+        double itemPrice = 0;
+        // if user selected size
+        if(!Objects.isNull(selectedSize)) {
+            // add to price
+            itemPrice += selectedSize.price;
+        }
+        // if user selected addIns
+        if(!Objects.isNull(selectedAddIns)) {
+            // addIns are all equal size
+            // get number of addIns and multiply by addIn price
+            itemPrice += ADD_IN_PRICE * selectedAddIns.size();
+        }
+        return itemPrice;
     }
 
     public boolean add(Object obj) {

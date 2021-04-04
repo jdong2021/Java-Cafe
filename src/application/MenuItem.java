@@ -1,25 +1,18 @@
 package application;
 
-import java.util.UUID;
-
 public class MenuItem {
     private double itemPrice;
-    private final UUID uuid;
+    static final double ADD_IN_PRICE = 0.50;
 
     MenuItem() {
         itemPrice = 0;
-        uuid = UUID.randomUUID();
     }
 
-    public double getItemPrice() {
+    public double itemPrice() {
         return itemPrice;
     }
 
-    public void addToItemPrice(double amount) {
+    protected void addToItemPrice(double amount) {
         this.itemPrice += amount;
-    }
-
-    public UUID getUuid() {
-        return uuid;
     }
 }

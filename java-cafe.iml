@@ -36,7 +36,6 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="library" name="JavaFX" level="project" />
     <orderEntry type="module-library" exported="">
       <library>
         <CLASSES>
@@ -109,5 +108,6 @@
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="library" name="lib" level="project" />
   </component>
 </module>

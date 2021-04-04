@@ -1,10 +1,8 @@
 package application;
 
-import javafx.collections.MapChangeListener;
+import javafx.collections.ListChangeListener;
 import org.junit.jupiter.api.Assertions;
 import org.junit.Test;
-
-import java.util.UUID;
 
 public class StoreOrdersTest {
 
@@ -27,15 +25,9 @@ public class StoreOrdersTest {
     @Test
     public void testObservableListener() {
 
-        MapChangeListener<UUID, Order> testLister = new MapChangeListener<UUID, Order>() {
-            @Override
-            public void onChanged(MapChangeListener.Change change) {
-                System.out.println("change! ");
-            }
-        };
+        ListChangeListener<Order> testLister = change -> System.out.println("change!");
 
         StoreOrders testStoreOrders = new StoreOrders(testLister);
-        StoreOrders testStoreOrdersTwo = new StoreOrders((MapChangeListener) change -> System.out.println("change! "));
 
         Order testOrder1 = new Order();
         System.out.println("1");
@@ -48,5 +40,38 @@ public class StoreOrdersTest {
         Assertions.assertTrue(testStoreOrders.add(testOrder3));
         System.out.println("4");
         Assertions.assertTrue(testStoreOrders.remove(testOrder3));
+    }
+
+    @Test
+    public void add() {
+        StoreOrders testStoreOrders = new StoreOrders();
+        Order testOrder = new Order();
+        testOrder.add(new Donut());
+
+        // Test Case 1: accept Order objects
+        Assertions.assertTrue(testStoreOrders.add(testOrder));
+
+        // Test Case 2: do not accept duplicate order objects
+        Assertions.assertFalse(testStoreOrders.add(testOrder));
+
+        // Test Case 4: do not accept invalid objects
+        Assertions.assertFalse(testStoreOrders.add(new Object()));
+    }
+
+    @Test
+    public void remove() {
+        StoreOrders testStoreOrders = new StoreOrders();
+        Order testOrder = new Order();
+        testOrder.add(new Donut());
+        testStoreOrders.add(testOrder);
+
+        // Test Case 1: remove Order objects
+        Assertions.assertTrue(testStoreOrders.remove(testOrder));
+
+        // Test Case 2: cannot remove objects not in list
+        Assertions.assertFalse(testStoreOrders.remove(testOrder));
+
+        // Test Case 3: cannot remove invalid objects
+        Assertions.assertFalse(testStoreOrders.remove(new Object()));
     }
 }

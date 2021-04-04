@@ -1,14 +1,20 @@
 package application;
 
-import java.util.HashMap;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import java.util.UUID;
 
 public class Order implements Customizable {
     private final UUID orderNumber;
-    private HashMap<UUID, MenuItem> currentOrder = new HashMap();
+    private ObservableList<MenuItem> currentOrder = FXCollections.observableArrayList();
 
     public Order() {
         orderNumber = UUID.randomUUID();
+    }
+
+    public Order(javafx.collections.ListChangeListener<MenuItem> listener) {
+        orderNumber = UUID.randomUUID();
+        currentOrder.addListener(listener);
     }
 
 
@@ -33,9 +39,12 @@ public class Order implements Customizable {
         if(obj instanceof MenuItem) {
             // cast
             final MenuItem NEW_MENU_ITEM = (MenuItem) obj;
-            // add to current order
-            currentOrder.put(NEW_MENU_ITEM.getUuid(), NEW_MENU_ITEM);
-            return true;
+            // cannot add the exact same object again
+            if(!currentOrder.contains(NEW_MENU_ITEM)) {
+                // add to current order
+                currentOrder.add(NEW_MENU_ITEM);
+                return true;
+            }
         }
         return false;
     }
@@ -46,9 +55,9 @@ public class Order implements Customizable {
             // cast
             final MenuItem TARGET_MENU_ITEM = (MenuItem) obj;
             // check if in current order
-            if(currentOrder.containsKey(TARGET_MENU_ITEM.getUuid())) {
+            if(currentOrder.contains(TARGET_MENU_ITEM)) {
                 // remove from current order
-                currentOrder.remove(TARGET_MENU_ITEM.getUuid());
+                currentOrder.remove(TARGET_MENU_ITEM);
                 return true;
             }
         }
