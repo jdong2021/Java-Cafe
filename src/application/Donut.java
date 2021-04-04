@@ -9,6 +9,10 @@ public class Donut extends MenuItem {
         super();
     }
 
+    public Donut(DonutType.Flavor selectedDonut) {
+        this.selectedDonut = selectedDonut;
+    }
+
     @Override
     public double itemPrice() {
         double itemPrice = 0;
@@ -36,5 +40,9 @@ public class Donut extends MenuItem {
             super.addToItemPrice(selectedDonut.getPrice());
         }
         return true;
+    }
+
+    public DonutType.Flavor getSelectedDonut() {
+        return selectedDonut;
     }
 }

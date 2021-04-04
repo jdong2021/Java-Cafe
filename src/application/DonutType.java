@@ -74,7 +74,7 @@ public final class DonutType {
         public static Flavor getFlavorByLabel(String label) {
             Flavor selectedFlavor = null;
             for(Flavor flavor : Flavor.values()) {
-                if(flavor.label == label) {
+                if(flavor.label.equals(label)) {
                     selectedFlavor = flavor;
                 }
             }

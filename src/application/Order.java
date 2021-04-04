@@ -79,6 +79,8 @@ public class Order implements Customizable {
                 '}';
     }
 
+    public ObservableList<MenuItem> getCurrentOrder() { return currentOrder; }
+
     public UUID getOrderNumber() {
         return orderNumber;
     }
