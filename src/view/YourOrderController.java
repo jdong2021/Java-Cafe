@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 
-public class yourorderController implements Initializable {
+public class YourOrderController implements Initializable {
     private static StoreOrders myStoreOrders = new StoreOrders();
     private static final double SALES_TAX_PERCENT = 0.06625;
 
@@ -43,13 +43,13 @@ public class yourorderController implements Initializable {
 
    @FXML
    public void loadOrderInfo(){
-       Order currentOrder = OrderingDonutsController.getCurrentOrder();
-// initialize a new map
-       HashMap<DonutType.Flavor, Integer> order = new HashMap<>();
+       Order currentOrder = DonutController.getCurrentOrder();
+        // initialize a new map
+       HashMap<DonutFlavor, Integer> order = new HashMap<>();
 
        // reduce items in order to flavor selection and amounts
        for(application.MenuItem item : currentOrder.getCurrentOrder()) {
-           DonutType.Flavor selectedFlavor = ((Donut) item).getSelectedDonut();
+           DonutFlavor selectedFlavor = ((Donut) item).getFlavor();
            if(order.containsKey(selectedFlavor)) {
                order.put(selectedFlavor, order.get(selectedFlavor) + 1);
            } else {
@@ -66,12 +66,12 @@ public class yourorderController implements Initializable {
 
    @FXML
    public void loadSubtotalInfo(){
-       yourOrderSubtotal.setText(Double.toString(OrderingDonutsController.getCurrentSubtotal()));
+       yourOrderSubtotal.setText(Double.toString(DonutController.getCurrentSubtotal()));
    }
 
    @FXML
    public void loadStoreOrders() throws IOException {
-       myStoreOrders.add(OrderingDonutsController.getCurrentOrder());
+       myStoreOrders.add(DonutController.getCurrentOrder());
        System.out.println("order added");
 
 
@@ -93,7 +93,7 @@ public class yourorderController implements Initializable {
    }
    @FXML
    private void calculatesalestax(){
-        salestax.setText(Double.toString(RoundTo2Decimals(OrderingDonutsController.getCurrentSubtotal() * SALES_TAX_PERCENT)));
+        salestax.setText(Double.toString(RoundTo2Decimals(DonutController.getCurrentSubtotal() * SALES_TAX_PERCENT)));
    }
 
    @FXML
@@ -111,13 +111,13 @@ public class yourorderController implements Initializable {
     @FXML
     private void removeItem(){
        //iterate thru order to find menuitem to remvoe
-        Order currentOrder = OrderingDonutsController.getCurrentOrder();
+        Order currentOrder = DonutController.getCurrentOrder();
 
 
         // get index to split
         // get last occurrence of space character to separate label and amounr
         final int INDEX = myOrder.getSelectionModel().getSelectedItem().lastIndexOf(" ");
-        final DonutType.Flavor FLAVOR_TO_REMOVE = DonutType.Flavor.getFlavorByLabel(myOrder.getSelectionModel().getSelectedItem().substring(0, INDEX));
+        final DonutFlavor FLAVOR_TO_REMOVE = DonutFlavor.getFlavorByLabel(myOrder.getSelectionModel().getSelectedItem().substring(0, INDEX));
         final int AMOUNT = Integer.parseInt(myOrder.getSelectionModel().getSelectedItem().substring(INDEX+1));
         ArrayList<Donut> donutsToDelete = new ArrayList<>();
 
@@ -125,7 +125,7 @@ public class yourorderController implements Initializable {
         currentOrder.getCurrentOrder().forEach((item) -> {
             Donut donut = (Donut) item;
             // get donuts that match selected flavor to delete
-            if(donut.getSelectedDonut() == FLAVOR_TO_REMOVE) {
+            if(donut.getFlavor() == FLAVOR_TO_REMOVE) {
                 donutsToDelete.add(donut);
             }
         });

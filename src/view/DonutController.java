@@ -13,6 +13,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.net.URL;
 import java.text.DecimalFormat;
 
@@ -20,8 +21,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 
-public class OrderingDonutsController implements Initializable {
+public class DonutController implements Initializable {
     private static Order currentOrder;
+    private static Double subtotal;
     private final String[] AVAILABLE_QUANTITIES = { "1","2","3", "4", "5", "6", "12" };
     private final String MISSING_SELECTION = "Please select a donut";
     private final String MISSING_QUANITITY = "Please select a quantity";
@@ -69,7 +71,6 @@ public class OrderingDonutsController implements Initializable {
     private void adjustSubTotal() {
         subtotal = RoundTo2Decimals(currentOrder.getOrderSubtotal());
         subTotalField.setText(Double.toString(RoundTo2Decimals(currentOrder.getOrderSubtotal())));
-
     }
 
     private void adjustCurrentOrderList() {
@@ -215,20 +216,12 @@ public class OrderingDonutsController implements Initializable {
         }
 
 
-
-
-
-
-
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../view/yourorder.fxml"));
         Parent root1 = (Parent) fxmlLoader.load();
         Stage stage = new Stage();
         stage.setScene(new Scene(root1));
         stage.show();
     }
-
-
-
 
     @FXML
     private void loadDonutType(){

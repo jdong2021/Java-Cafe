@@ -1,9 +1,6 @@
 package view;
 
-import application.Donut;
-import application.DonutType;
-import application.Order;
-import application.StoreOrders;
+import application.*;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -11,7 +8,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
-import application.StoreOrders;
 
 import java.net.URL;
 import java.text.DecimalFormat;
@@ -19,8 +15,8 @@ import java.util.HashMap;
 import java.util.ResourceBundle;
 import java.util.UUID;
 
-public class storeorderController implements Initializable {
-    private StoreOrders thisstoresorders= yourorderController.getStoreOrders();
+public class StoreOrderController implements Initializable {
+    private StoreOrders thisstoresorders= YourOrderController.getStoreOrders();
 
     private UUID currentOrderUUID;
     @FXML
@@ -33,7 +29,7 @@ public class storeorderController implements Initializable {
     @FXML
     private Button cancelOrderBtn;
 
-    public storeorderController() {
+    public StoreOrderController() {
  //       thisstoresorders = new StoreOrders(change -> {
   //
  //     });
@@ -49,7 +45,7 @@ public class storeorderController implements Initializable {
 
     @FXML
     private void loadOrdernumbers() {
-        //StoreOrders thisstoresorders = yourorderController.getStoreOrders();
+        //StoreOrders thisstoresorders = YourOrderController.getStoreOrders();
         for (application.Order o : thisstoresorders.getOrders()) {
             orderNumbercombobox.getItems().add(o.getOrderNumber().toString());
         }
@@ -61,7 +57,7 @@ public class storeorderController implements Initializable {
             return;
         }
         currentOrderUUID = UUID.fromString(orderNumbercombobox.getSelectionModel().getSelectedItem());
-      //  StoreOrders thisstoresorders = yourorderController.getStoreOrders();
+      //  StoreOrders thisstoresorders = YourOrderController.getStoreOrders();
         double currentOrderTotal =0;
 
 
@@ -70,18 +66,17 @@ public class storeorderController implements Initializable {
                 currentOrderTotal = o.getOrderFinalTotal();
 
                 // initialize a new map
-                HashMap<DonutType.Flavor, Integer> order = new HashMap<>();
+                HashMap<DonutFlavor, Integer> order = new HashMap<>();
 
                 // reduce items in order to flavor selection and amounts
-                for (application.MenuItem item : o.getCurrentOrder()) {
-                    DonutType.Flavor selectedFlavor = ((Donut) item).getSelectedDonut();
+                for (MenuItem item : o.getCurrentOrder()) {
+                    DonutFlavor selectedFlavor = ((Donut) item).getFlavor();
                     if (order.containsKey(selectedFlavor)) {
                         order.put(selectedFlavor, order.get(selectedFlavor) + 1);
                     } else {
                         order.put(selectedFlavor, 1);
                     }
                 }
-
 
                 storeOrderListView.getItems().clear();
 
@@ -114,7 +109,7 @@ public class storeorderController implements Initializable {
 
     @FXML
     private void cancelOrder(){
-        //StoreOrders thisstoresorders = yourorderController.getStoreOrders();
+        //StoreOrders thisstoresorders = YourOrderController.getStoreOrders();
         currentOrderUUID = UUID.fromString(orderNumbercombobox.getSelectionModel().getSelectedItem());
 
         for (application.Order o : thisstoresorders.getOrders()) {

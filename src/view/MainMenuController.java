@@ -19,18 +19,18 @@ import javafx.scene.control.Button;
 import javafx.stage.Stage;
 import javafx.scene.control.TextField;
 
-public class mainmenuController implements Initializable {
+public class MainMenuController implements Initializable {
 
     @FXML
     private Button orderDonutBtn;
 
-    public mainmenuController(){
+    public MainMenuController(){
         storeOrders = new StoreOrders();
     }
     private StoreOrders storeOrders;
 
-    public static void loadMainMenu() throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(Controller.class.getResource("../view/mainmenu.fxml"));
+    public void loadMainMenu() throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../view/mainmenu.fxml"));
         Parent root1 = fxmlLoader.load();
         Stage stage = new Stage();
         stage.setScene(new Scene(root1));
