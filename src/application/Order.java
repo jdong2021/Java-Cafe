@@ -7,6 +7,7 @@ import java.util.UUID;
 public class Order implements Customizable {
     private final UUID orderNumber;
     private ObservableList<MenuItem> currentOrder = FXCollections.observableArrayList();
+    private static final double TAX_MULTIPLIER = 1.06625;
 
     public Order() {
         orderNumber = UUID.randomUUID();
@@ -23,6 +24,11 @@ public class Order implements Customizable {
             subTotal += item.itemPrice();
         }
         return subTotal;
+    }
+
+    public double getOrderFinalTotal(){
+        double subTotal = getOrderSubtotal();
+        return (subTotal*TAX_MULTIPLIER);
     }
 
     // maybe i should make a add method along with a quantity?

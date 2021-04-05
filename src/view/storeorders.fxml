@@ -14,8 +14,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.storeorderController">
    <children>
       <BorderPane layoutX="-7.0" prefHeight="400.0" prefWidth="606.0">
          <top>
@@ -34,8 +33,8 @@
                         <Font size="24.0" />
                      </font>
                   </Text>
-                  <ComboBox prefWidth="150.0" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-                  <TextField maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="26.0" prefWidth="120.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+                  <ComboBox fx:id="orderNumbercombobox" onAction="#displayOrderContents" prefWidth="150.0" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+                  <TextField fx:id="storeOrderTotal" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="26.0" prefWidth="120.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
                   <Label text="total" GridPane.columnIndex="1" GridPane.rowIndex="1">
                      <padding>
                         <Insets left="40.0" />
@@ -45,7 +44,7 @@
             </GridPane>
          </top>
          <center>
-            <ListView maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="218.0" prefWidth="500.0" BorderPane.alignment="CENTER" />
+            <ListView fx:id="storeOrderListView" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="218.0" prefWidth="500.0" BorderPane.alignment="CENTER" />
          </center>
          <bottom>
             <GridPane BorderPane.alignment="CENTER">
@@ -57,7 +56,7 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <Button mnemonicParsing="false" text="Cancel Order" GridPane.halignment="CENTER" />
+                  <Button fx:id="cancelOrderBtn" mnemonicParsing="false" onAction="#cancelOrder" text="Cancel Order" GridPane.halignment="CENTER" />
                   <Button mnemonicParsing="false" text="Export Order" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
                </children>
             </GridPane>

@@ -12,6 +12,7 @@ import java.util.Arrays;
 
 public class StoreOrders implements Customizable {
     private ObservableList<Order> orders = FXCollections.observableArrayList();
+    private static int endingtotal;
 
     public StoreOrders() { }
 

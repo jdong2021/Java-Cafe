@@ -5,14 +5,17 @@ import application.MenuItem;
 import javafx.collections.ListChangeListener;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.net.URL;
 import java.text.DecimalFormat;
 
@@ -22,12 +25,13 @@ import java.util.Map;
 import java.util.ResourceBundle;
 
 public class OrderingDonutsController implements Initializable {
-    private Order currentOrder;
+    private static Order currentOrder;
     private final String[] AVAILABLE_QUANTITIES = { "1","2","3", "4", "5", "6", "12" };
     private final String MISSING_SELECTION = "Please select a donut";
     private final String MISSING_QUANITITY = "Please select a quantity";
     private final String ERROR = "Error";
     private final String EMPTY_LIST = "List is empty";
+    private static Double subtotal;
 
     @FXML
     private ListView<String> donutPickedlistView;
@@ -47,7 +51,17 @@ public class OrderingDonutsController implements Initializable {
     private Button removeDonutBtn;
 
     @FXML
+    private Button addtoOrderBtn;
+
+    @FXML
     private TextField subTotalField;
+
+    public static Order getCurrentOrder(){
+        return (currentOrder);
+    }
+    public static Double getCurrentSubtotal(){
+        return (subtotal);
+    }
 
 
     public OrderingDonutsController(){
@@ -58,7 +72,9 @@ public class OrderingDonutsController implements Initializable {
     }
 
     private void adjustSubTotal() {
+        subtotal = RoundTo2Decimals(currentOrder.getOrderSubtotal());
         subTotalField.setText(Double.toString(RoundTo2Decimals(currentOrder.getOrderSubtotal())));
+
     }
 
     private void adjustCurrentOrderList() {
@@ -151,7 +167,7 @@ public class OrderingDonutsController implements Initializable {
         }
     }
 
-    private double RoundTo2Decimals(double val) {
+    public double RoundTo2Decimals(double val) {
         DecimalFormat df2 = new DecimalFormat("###.##");
         return Double.valueOf(df2.format(val));
     }
@@ -181,6 +197,44 @@ public class OrderingDonutsController implements Initializable {
         loadDonutType();
         loadDonutQuantity();
     }
+
+
+    @FXML
+    private void loadyourOrder() throws IOException {
+
+        // if empty
+        if(donutlistView.getSelectionModel().isEmpty()) {
+            displayAlert(ERROR, EMPTY_LIST);
+            return;
+        }
+
+        // if no donut was selected
+        if(donutlistView.getSelectionModel().getSelectedItem() == null) {
+            displayAlert(ERROR, MISSING_SELECTION);
+            return;
+        }
+
+        // if no quantity was selected
+        if(donutQuantityComboBox.getSelectionModel().getSelectedItem() == null) {
+            displayAlert(ERROR, MISSING_QUANITITY);
+            return;
+        }
+
+
+
+
+
+
+
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../view/yourorder.fxml"));
+        Parent root1 = (Parent) fxmlLoader.load();
+        Stage stage = new Stage();
+        stage.setScene(new Scene(root1));
+        stage.show();
+    }
+
+
+
 
     @FXML
     private void loadDonutType(){

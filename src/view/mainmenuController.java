@@ -18,13 +18,13 @@ import javafx.scene.control.Button;
 import javafx.stage.Stage;
 import javafx.scene.control.TextField;
 
-public class Controller implements Initializable {
+public class mainmenuController implements Initializable {
 
 
     @FXML
     private Button orderDonutBtn;
 
-    public Controller(){
+    public mainmenuController(){
     }
 
     @FXML
