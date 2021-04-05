@@ -56,7 +56,7 @@
                   <Insets top="16.0" />
                </padding>
             </Button>
-            <Button contentDisplay="TOP" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="144.0" prefWidth="113.0" text="Order Coffee" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+            <Button fx:id="orderCoffeeBtn" contentDisplay="TOP" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#loadOrderCoffee" prefHeight="144.0" prefWidth="113.0" text="Order Coffee" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                <graphic>
                   <ImageView fitHeight="75.0" fitWidth="94.0" pickOnBounds="true" preserveRatio="true">
                      <image>
