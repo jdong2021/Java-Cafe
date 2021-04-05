@@ -1,8 +1,6 @@
 package view;
 import application.Donut;
 import application.*;
-import application.MenuItem;
-import javafx.collections.ListChangeListener;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -15,13 +13,11 @@ import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-import java.io.IOException;
 import java.net.URL;
 import java.text.DecimalFormat;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.ResourceBundle;
 
 public class OrderingDonutsController implements Initializable {
@@ -31,7 +27,6 @@ public class OrderingDonutsController implements Initializable {
     private final String MISSING_QUANITITY = "Please select a quantity";
     private final String ERROR = "Error";
     private final String EMPTY_LIST = "List is empty";
-    private static Double subtotal;
 
     @FXML
     private ListView<String> donutPickedlistView;
@@ -56,6 +51,13 @@ public class OrderingDonutsController implements Initializable {
     @FXML
     private TextField subTotalField;
 
+    public DonutController(){
+        currentOrder = new Order(change -> {
+            adjustSubTotal();
+            adjustCurrentOrderList();
+        });
+    }
+
     public static Order getCurrentOrder(){
         return (currentOrder);
     }
@@ -63,13 +65,6 @@ public class OrderingDonutsController implements Initializable {
         return (subtotal);
     }
 
-
-    public OrderingDonutsController(){
-        currentOrder = new Order(change -> {
-            adjustSubTotal();
-            adjustCurrentOrderList();
-        });
-    }
 
     private void adjustSubTotal() {
         subtotal = RoundTo2Decimals(currentOrder.getOrderSubtotal());
@@ -79,11 +74,11 @@ public class OrderingDonutsController implements Initializable {
 
     private void adjustCurrentOrderList() {
         // initialize a new map
-        HashMap<DonutType.Flavor, Integer> order = new HashMap<>();
+        HashMap<DonutFlavor, Integer> order = new HashMap<>();
 
         // reduce items in order to flavor selection and amounts
         for(application.MenuItem item : currentOrder.getCurrentOrder()) {
-            DonutType.Flavor selectedFlavor = ((Donut) item).getSelectedDonut();
+            DonutFlavor selectedFlavor = ((Donut) item).getFlavor();
             if(order.containsKey(selectedFlavor)) {
                 order.put(selectedFlavor, order.get(selectedFlavor) + 1);
             } else {
@@ -93,8 +88,8 @@ public class OrderingDonutsController implements Initializable {
 
         donutPickedlistView.getItems().clear();
 
-        order.forEach((k,v) -> {
-            donutPickedlistView.getItems().add(k.getLabel() + " " + v);
+        order.forEach((donut, amount) -> {
+            donutPickedlistView.getItems().add(donut.getLabel() + " " + amount);
         });
     }
 
@@ -119,10 +114,9 @@ public class OrderingDonutsController implements Initializable {
         }
 
         // match the UI string to the enum
-        final DonutType.Flavor SELECTED_FLAVOR = DonutType.Flavor.getFlavorByLabel(donutlistView.getSelectionModel().getSelectedItem());
+        final DonutFlavor SELECTED_FLAVOR = DonutFlavor.getFlavorByLabel(donutlistView.getSelectionModel().getSelectedItem());
         // get amount
         final int SELECTED_AMOUNT = Integer.parseInt(donutQuantityComboBox.getSelectionModel().getSelectedItem());
-
 
         // add to order
         for(int i = 0; i < SELECTED_AMOUNT; i++) {
@@ -147,7 +141,7 @@ public class OrderingDonutsController implements Initializable {
         // get index to split
         // get last occurrence of space character to separate label and amounr
         final int INDEX = donutPickedlistView.getSelectionModel().getSelectedItem().lastIndexOf(" ");
-        final DonutType.Flavor FLAVOR_TO_REMOVE = DonutType.Flavor.getFlavorByLabel(donutPickedlistView.getSelectionModel().getSelectedItem().substring(0, INDEX));
+        final DonutFlavor FLAVOR_TO_REMOVE = DonutFlavor.getFlavorByLabel(donutPickedlistView.getSelectionModel().getSelectedItem().substring(0, INDEX));
         final int AMOUNT = Integer.parseInt(donutPickedlistView.getSelectionModel().getSelectedItem().substring(INDEX+1));
         ArrayList<Donut> donutsToDelete = new ArrayList<>();
 
@@ -155,7 +149,7 @@ public class OrderingDonutsController implements Initializable {
         currentOrder.getCurrentOrder().forEach((item) -> {
             Donut donut = (Donut) item;
             // get donuts that match selected flavor to delete
-            if(donut.getSelectedDonut() == FLAVOR_TO_REMOVE) {
+            if(donut.getFlavor() == FLAVOR_TO_REMOVE) {
                 donutsToDelete.add(donut);
             }
         });
@@ -238,8 +232,8 @@ public class OrderingDonutsController implements Initializable {
 
     @FXML
     private void loadDonutType(){
-        for(DonutType.Type type : DonutType.Type.values()) {
-            donutTypeComboBox.getItems().add(type.getDisplayableType());
+        for(DonutType type : DonutType.values()) {
+            donutTypeComboBox.getItems().add(type.getLabel());
         }
     }
 
@@ -253,15 +247,22 @@ public class OrderingDonutsController implements Initializable {
 
     @FXML
     private void handleSelectDonutType(ActionEvent event){
-        final DonutType.Type SELECTED_DONUT_TYPE = DonutType.Type.getTypeByLabel(donutTypeComboBox.getValue());
+
+        final DonutType SELECTED_DONUT_TYPE = DonutType.getTypeByLabel(donutTypeComboBox.getValue());
 
         donutlistView.getItems().clear();
 
-        for(DonutType.Flavor flavor : DonutType.Flavor.values()) {
+        for(DonutFlavor flavor : DonutFlavor.values()) {
             if(flavor.getDonutType() == SELECTED_DONUT_TYPE) {
                 donutlistView.getItems().add(flavor.getLabel());
             }
         }
+    }
+
+    @FXML
+    private void addToOrder() throws IOException {
+//        Context.getInstance().getStoreOrders().add(currentOrder);
+//        Controller.loadMainMenu();
     }
 }
 

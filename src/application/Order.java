@@ -20,6 +20,7 @@ public class Order implements Customizable {
 
     public double getOrderSubtotal() {
         double subTotal = 0;
+        // map over each item type in order
         for(MenuItem item : currentOrder) {
             subTotal += item.itemPrice();
         }
@@ -51,11 +52,11 @@ public class Order implements Customizable {
         // type check
         if(obj instanceof MenuItem) {
             // cast
-            final MenuItem NEW_MENU_ITEM = (MenuItem) obj;
+            final MenuItem MENU_ITEM = (MenuItem) obj;
             // cannot add the exact same object again
-            if(!currentOrder.contains(NEW_MENU_ITEM)) {
+            if(!currentOrder.contains(MENU_ITEM)) {
                 // add to current order
-                currentOrder.add(NEW_MENU_ITEM);
+                currentOrder.add(MENU_ITEM);
                 return true;
             }
         }
@@ -66,11 +67,11 @@ public class Order implements Customizable {
         // type check
         if(obj instanceof MenuItem) {
             // cast
-            final MenuItem TARGET_MENU_ITEM = (MenuItem) obj;
+            final MenuItem MENU_ITEM = (MenuItem) obj;
             // check if in current order
-            if(currentOrder.contains(TARGET_MENU_ITEM)) {
-                // remove from current order
-                currentOrder.remove(TARGET_MENU_ITEM);
+            if(currentOrder.contains(MENU_ITEM)) {
+                // delete
+                currentOrder.remove(MENU_ITEM);
                 return true;
             }
         }

@@ -9,24 +9,24 @@ public class CoffeeTest {
     public void setSize() {
         Coffee testCoffee = new Coffee();
         // Test Case 1: set short size and check price
-        Assertions.assertTrue(testCoffee.setSize(Coffee.sizes.SHORT));
-        Assertions.assertEquals(Coffee.sizes.SHORT.getPrice(), testCoffee.itemPrice());
+        Assertions.assertTrue(testCoffee.setSize(CoffeeSizes.SHORT));
+        Assertions.assertEquals(CoffeeSizes.SHORT.getPrice(), testCoffee.itemPrice());
 
         // Test Case 2: set tall size
-        Assertions.assertTrue(testCoffee.setSize(Coffee.sizes.TALL));
-        Assertions.assertEquals(testCoffee.itemPrice(), Coffee.sizes.TALL.getPrice());
+        Assertions.assertTrue(testCoffee.setSize(CoffeeSizes.TALL));
+        Assertions.assertEquals(testCoffee.itemPrice(), CoffeeSizes.TALL.getPrice());
 
         // Test Case 3: set grande size
-        Assertions.assertTrue(testCoffee.setSize(Coffee.sizes.GRANDE));
-        Assertions.assertEquals(testCoffee.itemPrice(), Coffee.sizes.GRANDE.getPrice());
+        Assertions.assertTrue(testCoffee.setSize(CoffeeSizes.GRANDE));
+        Assertions.assertEquals(testCoffee.itemPrice(), CoffeeSizes.GRANDE.getPrice());
 
         // Test Case 4: set venti size
-        Assertions.assertTrue(testCoffee.setSize(Coffee.sizes.VENTI));
-        Assertions.assertEquals(testCoffee.itemPrice(), Coffee.sizes.VENTI.getPrice());
+        Assertions.assertTrue(testCoffee.setSize(CoffeeSizes.VENTI));
+        Assertions.assertEquals(testCoffee.itemPrice(), CoffeeSizes.VENTI.getPrice());
 
         // Test Case 5: set invalid size, check price remains the same
         Assertions.assertFalse(testCoffee.setSize(new Object()));
-        Assertions.assertEquals(testCoffee.itemPrice(), Coffee.sizes.VENTI.getPrice());
+        Assertions.assertEquals(testCoffee.itemPrice(), CoffeeSizes.VENTI.getPrice());
     }
 
     @Test
@@ -35,22 +35,22 @@ public class CoffeeTest {
         double expectedPrice = 0;
 
         // Test Case 1: add cream and check price
-        Assertions.assertTrue(testCoffee.add(Coffee.addIns.CREAM));
+        Assertions.assertTrue(testCoffee.add(CoffeeAddIns.CREAM));
         expectedPrice += Coffee.ADD_IN_PRICE;
         Assertions.assertEquals(testCoffee.itemPrice(), expectedPrice);
 
         // Test Case 2: add syrup and check price
-        Assertions.assertTrue(testCoffee.add(Coffee.addIns.SYRUP));
+        Assertions.assertTrue(testCoffee.add(CoffeeAddIns.SYRUP));
         expectedPrice += Coffee.ADD_IN_PRICE;
         Assertions.assertEquals(testCoffee.itemPrice(), expectedPrice);
 
         // Test Case 3: add milk and check price
-        Assertions.assertTrue(testCoffee.add(Coffee.addIns.MILK));
+        Assertions.assertTrue(testCoffee.add(CoffeeAddIns.MILK));
         expectedPrice += Coffee.ADD_IN_PRICE;
         Assertions.assertEquals(testCoffee.itemPrice(), expectedPrice);
 
         // Test Case 4: add caramel and check price
-        Assertions.assertTrue(testCoffee.add(Coffee.addIns.CARAMEL));
+        Assertions.assertTrue(testCoffee.add(CoffeeAddIns.CARAMEL));
         expectedPrice += Coffee.ADD_IN_PRICE;
         Assertions.assertEquals(testCoffee.itemPrice(), expectedPrice);
 
@@ -59,7 +59,7 @@ public class CoffeeTest {
         Assertions.assertEquals(testCoffee.itemPrice(), expectedPrice);
 
         // Test Case 6: add whipped cream and check price
-        Assertions.assertTrue(testCoffee.add(Coffee.addIns.WHIPPED_CREAM));
+        Assertions.assertTrue(testCoffee.add(CoffeeAddIns.WHIPPED_CREAM));
         expectedPrice += Coffee.ADD_IN_PRICE;
         Assertions.assertEquals(testCoffee.itemPrice(), expectedPrice);
     }
@@ -68,21 +68,21 @@ public class CoffeeTest {
     public void remove() {
         Coffee testCoffee = new Coffee();
 
-        testCoffee.add(Coffee.addIns.CREAM);
-        testCoffee.add(Coffee.addIns.SYRUP);
-        testCoffee.add(Coffee.addIns.MILK);
-        testCoffee.add(Coffee.addIns.CARAMEL);
-        testCoffee.add(Coffee.addIns.WHIPPED_CREAM);
+        testCoffee.add(CoffeeAddIns.CREAM);
+        testCoffee.add(CoffeeAddIns.SYRUP);
+        testCoffee.add(CoffeeAddIns.MILK);
+        testCoffee.add(CoffeeAddIns.CARAMEL);
+        testCoffee.add(CoffeeAddIns.WHIPPED_CREAM);
 
         double expectedPrice = Coffee.ADD_IN_PRICE * 5;
 
         // Test Case 1: remove cream and check price
-        Assertions.assertTrue(testCoffee.remove(Coffee.addIns.CREAM));
+        Assertions.assertTrue(testCoffee.remove(CoffeeAddIns.CREAM));
         expectedPrice -= Coffee.ADD_IN_PRICE;
         Assertions.assertEquals(testCoffee.itemPrice(), expectedPrice);
 
         // Test Case 2: remove cream again and check price
-        Assertions.assertFalse(testCoffee.remove(Coffee.addIns.CREAM));
+        Assertions.assertFalse(testCoffee.remove(CoffeeAddIns.CREAM));
         Assertions.assertEquals(testCoffee.itemPrice(), expectedPrice);
 
         // Test Case 3: remove invalid addIn and check price
@@ -90,22 +90,22 @@ public class CoffeeTest {
         Assertions.assertEquals(testCoffee.itemPrice(), expectedPrice);
 
         // Test Case 4: remove syrup and check price
-        Assertions.assertTrue(testCoffee.remove(Coffee.addIns.SYRUP));
+        Assertions.assertTrue(testCoffee.remove(CoffeeAddIns.SYRUP));
         expectedPrice -= Coffee.ADD_IN_PRICE;
         Assertions.assertEquals(testCoffee.itemPrice(), expectedPrice);
 
         // Test Case 5: remove milk and check price
-        Assertions.assertTrue(testCoffee.remove(Coffee.addIns.MILK));
+        Assertions.assertTrue(testCoffee.remove(CoffeeAddIns.MILK));
         expectedPrice -= Coffee.ADD_IN_PRICE;
         Assertions.assertEquals(testCoffee.itemPrice(), expectedPrice);
 
         // Test Case 6: remove caramel and check price
-        Assertions.assertTrue(testCoffee.remove(Coffee.addIns.CARAMEL));
+        Assertions.assertTrue(testCoffee.remove(CoffeeAddIns.CARAMEL));
         expectedPrice -= Coffee.ADD_IN_PRICE;
         Assertions.assertEquals(testCoffee.itemPrice(), expectedPrice);
 
         // Test Case 7: remove whipped cream and check price
-        Assertions.assertTrue(testCoffee.remove(Coffee.addIns.WHIPPED_CREAM));
+        Assertions.assertTrue(testCoffee.remove(CoffeeAddIns.WHIPPED_CREAM));
         expectedPrice -= Coffee.ADD_IN_PRICE;
         Assertions.assertEquals(testCoffee.itemPrice(), expectedPrice);
     }
