@@ -1,13 +1,14 @@
 package view;
 import application.*;
+import application.MenuItem;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 
-import javax.swing.*;
-import java.awt.event.ActionEvent;
+import javafx.event.ActionEvent;
 import java.net.URL;
 
+import java.util.Arrays;
 import java.util.ResourceBundle;
 
 public class CoffeeController extends OrderController implements Initializable {
@@ -69,45 +70,66 @@ public class CoffeeController extends OrderController implements Initializable {
     }
 
     @FXML
-    private void addCoffeeToTemp() {
+    private void onQuantitySelected() {
+        // get amount selected and current amount in order
         final int SELECTED_AMOUNT = Integer.parseInt(coffeeQuantityComboBox.getSelectionModel().getSelectedItem());
-        for(int i = 0; i < SELECTED_AMOUNT; i++) {
-            currentOrder.add(new Coffee());
+        final int CUR_AMOUNT = currentOrder.getCurrentOrder().size();
+
+        // case: do nothing
+        if(SELECTED_AMOUNT == CUR_AMOUNT) {
+            return;
         }
+
+        // case: need to delete objects
+        if(CUR_AMOUNT > SELECTED_AMOUNT) {
+            removeFromOrder(CUR_AMOUNT, SELECTED_AMOUNT);
+        }
+        // case: need to add objects
+        else if(CUR_AMOUNT < SELECTED_AMOUNT) {
+            addToOrder(CUR_AMOUNT, SELECTED_AMOUNT);
+        }
+
+        // check if sizes need to be set
         handleSize();
+        // check if addIns need to be set
         handleAddIn();
+        // adjust subTotal
+        adjustSubTotal(subTotalField);
     }
 
-    private void addMany(CoffeeAddIn addIn) {
-        currentOrder.getCurrentOrder().forEach((item) -> {
-            Coffee coffee = (Coffee) item;
-            coffee.add(addIn);
-        });
-    }
-
-    private void removeMany(CoffeeAddIn addIn) {
-        currentOrder.getCurrentOrder().forEach((item) -> {
-            Coffee coffee = (Coffee) item;
-            coffee.remove(addIn);
-        });
-    }
-
-    private void handleSize() {
-        // only do when Coffee object exists
-        if(!currentOrder.isEmpty()) {
-            // get selection
-            final CoffeeSize SELECTED_SIZE = CoffeeSize.getSizeByLabel(coffeeSizeComboBox.getSelectionModel().getSelectedItem());
-            // apply to each item in order
-            currentOrder.getCurrentOrder().forEach((item) -> {
-                Coffee coffee = (Coffee) item;
-                coffee.setSize(SELECTED_SIZE);
-            });
-        }
+    @FXML
+    private void onAddInSelected(ActionEvent e) {
+        // adjust addIns
+        handleAddIn();
+        // adjust subTotal
+        adjustSubTotal(subTotalField);
     }
 
     @FXML
     private void onSizeSelected(ActionEvent e) {
+        // adjust sizes
         handleSize();
+        // adjust subTotal
+        adjustSubTotal(subTotalField);
+    }
+
+    private void addToOrder(int curAmount, int selectedAmount) {
+        // get amount to add
+        final int AMOUNT_TO_ADD = selectedAmount - curAmount;
+        // for amount, add
+        for(int i = 0; i < AMOUNT_TO_ADD; i++) {
+            currentOrder.add(new Coffee());
+        }
+    }
+
+    private void removeFromOrder(int curAmount, int selectedAMount) {
+        // get array of objects to remove
+        Object[] objectsToDelete = currentOrder.getCurrentOrder().toArray();
+        objectsToDelete = Arrays.copyOfRange(objectsToDelete, selectedAMount, curAmount);
+        // for each object, delete
+        for( Object coffee : objectsToDelete) {
+            currentOrder.remove(coffee);
+        }
     }
 
     private void handleAddIn() {
@@ -151,8 +173,30 @@ public class CoffeeController extends OrderController implements Initializable {
         }
     }
 
-    @FXML
-    void onAddInSelected(ActionEvent e) {
-        handleAddIn();
+    private void addMany(CoffeeAddIn addIn) {
+        currentOrder.getCurrentOrder().forEach((item) -> {
+            Coffee coffee = (Coffee) item;
+            coffee.add(addIn);
+        });
+    }
+
+    private void removeMany(CoffeeAddIn addIn) {
+        currentOrder.getCurrentOrder().forEach((item) -> {
+            Coffee coffee = (Coffee) item;
+            coffee.remove(addIn);
+        });
+    }
+
+    private void handleSize() {
+        // only do when Coffee object exists
+        if(!currentOrder.isEmpty()) {
+            // get selection
+            final CoffeeSize SELECTED_SIZE = CoffeeSize.getSizeByLabel(coffeeSizeComboBox.getSelectionModel().getSelectedItem());
+            // apply to each item in order
+            currentOrder.getCurrentOrder().forEach((item) -> {
+                Coffee coffee = (Coffee) item;
+                coffee.setSize(SELECTED_SIZE);
+            });
+        }
     }
 }

@@ -26,6 +26,10 @@ public class Coffee extends MenuItem implements Customizable {
             // get number of addIns and multiply by addIn price
             itemPrice += ADD_IN_PRICE * selectedAddIns.size();
         }
+
+        System.out.println(selectedSize);
+        System.out.println(selectedAddIns);
+        System.out.println(itemPrice);
         return itemPrice;
     }
 
