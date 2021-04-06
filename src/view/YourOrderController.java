@@ -87,7 +87,8 @@ public class YourOrderController implements Initializable {
 
 
 
-
+       stage = (Stage) placeOrderBtn.getScene().getWindow();
+       stage.close();
 
 
    }

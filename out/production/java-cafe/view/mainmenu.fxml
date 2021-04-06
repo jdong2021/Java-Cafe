@@ -65,7 +65,7 @@
                   </ImageView>
                </graphic>
             </Button>
-            <Button alignment="CENTER" contentDisplay="TOP" mnemonicParsing="false" text="Your Order" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="BOTTOM">
+            <Button fx:id="yourOrderBtn" alignment="CENTER" contentDisplay="TOP" mnemonicParsing="false" onAction="#loadYourOrder" text="Your Order" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="BOTTOM">
                <graphic>
                   <ImageView fitHeight="51.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -74,7 +74,7 @@
                   </ImageView>
                </graphic>
             </Button>
-            <Button contentDisplay="TOP" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="82.0" prefWidth="89.0" text="Store Orders" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="BOTTOM">
+            <Button fx:id="storeOrdersBtn" contentDisplay="TOP" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#loadStoreOrders" prefHeight="82.0" prefWidth="89.0" text="Store Orders" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="BOTTOM">
                <graphic>
                   <ImageView fitHeight="58.0" fitWidth="73.0" pickOnBounds="true" preserveRatio="true">
                      <image>

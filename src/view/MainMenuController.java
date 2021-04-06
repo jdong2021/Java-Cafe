@@ -24,6 +24,13 @@ public class MainMenuController implements Initializable {
     @FXML
     private Button orderDonutBtn;
 
+    @FXML
+    private Button orderCofeeBtn;
+    @FXML
+    private Button yourOrderBtn;
+    @FXML
+    private Button storeOrdersBtn;
+
     public MainMenuController(){
         storeOrders = new StoreOrders();
     }
@@ -54,6 +61,24 @@ public class MainMenuController implements Initializable {
         stage.setScene(new Scene(root1));
         stage.show();
     }
+
+    @FXML
+    private void loadYourOrder() throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../view/yourorder.fxml"));
+        Parent root1 = fxmlLoader.load();
+        Stage stage = new Stage();
+        stage.setScene(new Scene(root1));
+        stage.show();
+    }
+    @FXML
+    private void loadStoreOrders() throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../view/storeorders.fxml"));
+        Parent root1 = fxmlLoader.load();
+        Stage stage = new Stage();
+        stage.setScene(new Scene(root1));
+        stage.show();
+    }
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
