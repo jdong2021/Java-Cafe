@@ -23,7 +23,7 @@ import java.util.ResourceBundle;
 
 public class DonutController implements Initializable {
     private static Order currentOrder;
-    private static Double subtotal;
+    private static Double subtotal= 0.00;
     private final String[] AVAILABLE_QUANTITIES = { "1","2","3", "4", "5", "6", "12" };
     private final String MISSING_SELECTION = "Please select a donut";
     private final String MISSING_QUANITITY = "Please select a quantity";
@@ -191,6 +191,7 @@ public class DonutController implements Initializable {
        // loadDonutList();
         loadDonutType();
         loadDonutQuantity();
+        subTotalField.setEditable(false);
     }
 
 

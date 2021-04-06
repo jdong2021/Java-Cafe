@@ -48,6 +48,8 @@ public class StoreOrderController implements Initializable {
         loadOrdernumbers();
         //populate order numbers
 
+        storeOrderTotal.setEditable(false);
+
     }
 
     @FXML
@@ -118,6 +120,12 @@ public class StoreOrderController implements Initializable {
     @FXML
     private void cancelOrder(){
         //StoreOrders thisstoresorders = YourOrderController.getStoreOrders();
+        // if no order is selected then we cannot cancel!
+        if (orderNumbercombobox.getSelectionModel().getSelectedItem() == null){
+            displayAlert("Error", "No Order Selected ");
+            return;
+        }
+
         currentOrderUUID = UUID.fromString(orderNumbercombobox.getSelectionModel().getSelectedItem());
 
         for (application.Order o : thisstoresorders.getOrders()) {
@@ -226,7 +234,7 @@ public class StoreOrderController implements Initializable {
 
 
 
-            System.out.println(output);
+
             writer.write(output);
             writer.close();
 
