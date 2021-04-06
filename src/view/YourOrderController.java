@@ -66,13 +66,13 @@ public class YourOrderController implements Initializable {
 
    @FXML
    public void loadSubtotalInfo(){
-       yourOrderSubtotal.setText(Double.toString(DonutController.getCurrentSubtotal()));
+       yourOrderSubtotal.setText(RoundTo2Decimals(DonutController.getCurrentSubtotal()));
    }
 
    @FXML
    public void loadStoreOrders() throws IOException {
        myStoreOrders.add(DonutController.getCurrentOrder());
-       System.out.println("order added");
+       DonutController.getCurrentOrder().setTotal(totalTextField.getText());
 
 
 
@@ -94,19 +94,20 @@ public class YourOrderController implements Initializable {
    }
    @FXML
    private void calculatesalestax(){
-        salestax.setText(Double.toString(RoundTo2Decimals(DonutController.getCurrentSubtotal() * SALES_TAX_PERCENT)));
+        salestax.setText(RoundTo2Decimals(DonutController.getCurrentSubtotal() * SALES_TAX_PERCENT));
    }
 
    @FXML
    private void calculatetotal(){
        double subtotalval = Double.parseDouble(yourOrderSubtotal.getText());
        double salestaxval = Double.parseDouble(salestax.getText());
-       totalTextField.setText(Double.toString(RoundTo2Decimals(subtotalval+salestaxval)));
+       totalTextField.setText((RoundTo2Decimals(subtotalval+salestaxval)));
+
    }
 
-    public double RoundTo2Decimals(double val) {
-        DecimalFormat df2 = new DecimalFormat("###.##");
-        return Double.valueOf(df2.format(val));
+    public String RoundTo2Decimals(double val) {
+        DecimalFormat df2 = new DecimalFormat("##0.00");
+        return (df2.format(val));
     }
 
     @FXML

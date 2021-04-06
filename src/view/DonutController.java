@@ -69,8 +69,8 @@ public class DonutController implements Initializable {
 
 
     private void adjustSubTotal() {
-        subtotal = RoundTo2Decimals(currentOrder.getOrderSubtotal());
-        subTotalField.setText(Double.toString(RoundTo2Decimals(currentOrder.getOrderSubtotal())));
+        subtotal = currentOrder.getOrderSubtotal();
+        subTotalField.setText((RoundTo2Decimals(currentOrder.getOrderSubtotal())));
     }
 
     private void adjustCurrentOrderList() {
@@ -162,9 +162,9 @@ public class DonutController implements Initializable {
         }
     }
 
-    public double RoundTo2Decimals(double val) {
-        DecimalFormat df2 = new DecimalFormat("###.##");
-        return Double.valueOf(df2.format(val));
+    public String RoundTo2Decimals(double val) {
+        DecimalFormat df2 = new DecimalFormat("##0.00");
+        return (df2.format(val));
     }
 
     private static void displayAlert(String title, String message){

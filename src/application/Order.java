@@ -8,6 +8,7 @@ public class Order implements Customizable {
     private final UUID orderNumber;
     private ObservableList<MenuItem> currentOrder = FXCollections.observableArrayList();
     private static final double TAX_MULTIPLIER = 1.06625;
+    private String total = "";
 
     public Order() {
         orderNumber = UUID.randomUUID();
@@ -84,6 +85,13 @@ public class Order implements Customizable {
                 "orderNumber=" + orderNumber +
                 ", currentOrder=" + currentOrder +
                 '}';
+    }
+    public String getTotal(){
+        return this.total;
+    }
+
+    public void setTotal(String val){
+        this.total = val;
     }
 
     public ObservableList<MenuItem> getCurrentOrder() { return currentOrder; }
