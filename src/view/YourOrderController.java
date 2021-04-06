@@ -24,7 +24,7 @@ import java.util.ResourceBundle;
 public class YourOrderController implements Initializable {
     private static StoreOrders myStoreOrders = new StoreOrders();
     private static final double SALES_TAX_PERCENT = 0.06625;
-
+    private static Order currentOrder = DonutController.getCurrentOrder();
 
     public static StoreOrders getStoreOrders(){
         return myStoreOrders;
@@ -46,25 +46,28 @@ public class YourOrderController implements Initializable {
 
    @FXML
    public void loadOrderInfo(){
-       Order currentOrder = DonutController.getCurrentOrder();
+       //Order currentOrder = DonutController.getCurrentOrder();
         // initialize a new map
-       HashMap<DonutFlavor, Integer> order = new HashMap<>();
+       if (currentOrder != null) {
 
-       // reduce items in order to flavor selection and amounts
-       for(application.MenuItem item : currentOrder.getCurrentOrder()) {
-           DonutFlavor selectedFlavor = ((Donut) item).getFlavor();
-           if(order.containsKey(selectedFlavor)) {
-               order.put(selectedFlavor, order.get(selectedFlavor) + 1);
-           } else {
-               order.put(selectedFlavor, 1);
+           HashMap<DonutFlavor, Integer> order = new HashMap<>();
+
+           // reduce items in order to flavor selection and amounts
+           for (application.MenuItem item : currentOrder.getCurrentOrder()) {
+               DonutFlavor selectedFlavor = ((Donut) item).getFlavor();
+               if (order.containsKey(selectedFlavor)) {
+                   order.put(selectedFlavor, order.get(selectedFlavor) + 1);
+               } else {
+                   order.put(selectedFlavor, 1);
+               }
            }
+
+           myOrder.getItems().clear();
+
+           order.forEach((k, v) -> {
+               myOrder.getItems().add(k.getLabel() + " " + v);
+           });
        }
-
-       myOrder.getItems().clear();
-
-       order.forEach((k,v) -> {
-           myOrder.getItems().add(k.getLabel() + " " + v);
-       });
    }
 
    @FXML
@@ -78,7 +81,7 @@ public class YourOrderController implements Initializable {
        DonutController.getCurrentOrder().setTotal(totalTextField.getText());
 
        //check if empty order
-       if(totalTextField.getText().equals("0.00")){
+       if(totalTextField.getText().equals("0.00") || totalTextField.getText().equals("")){
            displayAlert("Error", "Order is empty");
            return;
        }
@@ -94,9 +97,16 @@ public class YourOrderController implements Initializable {
 
 
 
+       myOrder.getItems().clear();
+       yourOrderSubtotal.setText("");
+       salestax.setText("");
+       totalTextField.setText("");
+       currentOrder = null;
 
        stage = (Stage) placeOrderBtn.getScene().getWindow();
        stage.close();
+
+
 
 
    }
@@ -113,7 +123,7 @@ public class YourOrderController implements Initializable {
 
    }
 
-    public String RoundTo2Decimals(double val) {
+    public static String RoundTo2Decimals(double val) {
         DecimalFormat df2 = new DecimalFormat("##0.00");
         return (df2.format(val));
     }
@@ -158,7 +168,7 @@ public class YourOrderController implements Initializable {
 
             }
 
-    private static void displayAlert(String title, String message){
+    public static void displayAlert(String title, String message){
         Stage alertWindow = new Stage();
         alertWindow.setTitle(title);
         alertWindow.setMinWidth(300);
@@ -178,10 +188,13 @@ public class YourOrderController implements Initializable {
     }
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-            loadOrderInfo();
-            loadSubtotalInfo();
-            calculatesalestax();
-            calculatetotal();
+
+       if(currentOrder != null) {
+           loadOrderInfo();
+           loadSubtotalInfo();
+           calculatesalestax();
+           calculatetotal();
+       }
 
 
         yourOrderSubtotal.setEditable(false);

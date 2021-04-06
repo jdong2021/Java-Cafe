@@ -90,7 +90,7 @@ public class DonutController implements Initializable {
      */
     private void adjustSubTotal() {
         subtotal = currentOrder.getOrderSubtotal();
-        subTotalField.setText((RoundTo2Decimals(currentOrder.getOrderSubtotal())));
+        subTotalField.setText((YourOrderController.RoundTo2Decimals(currentOrder.getOrderSubtotal())));
     }
 
     /**
@@ -124,19 +124,19 @@ public class DonutController implements Initializable {
     private void addDonutToTemp() {
         // if empty
         if(donutlistView.getSelectionModel().isEmpty()) {
-            displayAlert(ERROR, EMPTY_LIST);
+            YourOrderController.displayAlert(ERROR, EMPTY_LIST);
             return;
         }
 
         // if no donut was selected
         if(donutlistView.getSelectionModel().getSelectedItem() == null) {
-            displayAlert(ERROR, MISSING_SELECTION);
+            YourOrderController.displayAlert(ERROR, MISSING_SELECTION);
             return;
         }
 
         // if no quantity was selected
         if(donutQuantityComboBox.getSelectionModel().getSelectedItem() == null) {
-            displayAlert(ERROR, MISSING_QUANITITY);
+            YourOrderController.displayAlert(ERROR, MISSING_QUANITITY);
             return;
         }
 
@@ -158,13 +158,13 @@ public class DonutController implements Initializable {
     private void removeDonutFromTemp(){
         // if empty
         if(donutPickedlistView.getSelectionModel().isEmpty()) {
-            displayAlert(ERROR, EMPTY_LIST);
+            YourOrderController.displayAlert(ERROR, EMPTY_LIST);
             return;
         }
 
         // if no donut was selected
         if(donutPickedlistView.getSelectionModel().getSelectedItem() == null) {
-            displayAlert(ERROR, MISSING_SELECTION);
+            YourOrderController.displayAlert(ERROR, MISSING_SELECTION);
             return;
         }
 
@@ -196,34 +196,34 @@ public class DonutController implements Initializable {
      * @param val double to be formatted
      * @return a properly formatted string
      */
-    public String RoundTo2Decimals(double val) {
-        DecimalFormat df2 = new DecimalFormat("##0.00");
-        return (df2.format(val));
-    }
+//    public String RoundTo2Decimals(double val) {
+//        DecimalFormat df2 = new DecimalFormat("##0.00");
+//        return (df2.format(val));
+//    }
 
     /**
      * displays an alert popup with a given title and message
      * @param title
      * @param message
      */
-    private static void displayAlert(String title, String message){
-        Stage alertWindow = new Stage();
-        alertWindow.setTitle(title);
-        alertWindow.setMinWidth(300);
-        Label label = new Label();
-        label.setText(message);
-        Button closeButton = new Button("Close Window");
-        closeButton.setOnAction(e -> alertWindow.close());
-
-        VBox layout = new VBox(10);
-        layout.getChildren().addAll(label,closeButton);
-        layout.setAlignment(Pos.CENTER);
-
-        Scene scene = new Scene(layout);
-        alertWindow.setScene(scene);
-        alertWindow.showAndWait();
-
-    }
+//    private static void displayAlert(String title, String message){
+//        Stage alertWindow = new Stage();
+//        alertWindow.setTitle(title);
+//        alertWindow.setMinWidth(300);
+//        Label label = new Label();
+//        label.setText(message);
+//        Button closeButton = new Button("Close Window");
+//        closeButton.setOnAction(e -> alertWindow.close());
+//
+//        VBox layout = new VBox(10);
+//        layout.getChildren().addAll(label,closeButton);
+//        layout.setAlignment(Pos.CENTER);
+//
+//        Scene scene = new Scene(layout);
+//        alertWindow.setScene(scene);
+//        alertWindow.showAndWait();
+//
+//    }
 
     /**
      * dictates actions after donut GUI is created
@@ -247,19 +247,19 @@ public class DonutController implements Initializable {
 
         // if empty
         if(donutlistView.getSelectionModel().isEmpty()) {
-            displayAlert(ERROR, EMPTY_LIST);
+            YourOrderController.displayAlert(ERROR, EMPTY_LIST);
             return;
         }
 
         // if no donut was selected
         if(donutlistView.getSelectionModel().getSelectedItem() == null) {
-            displayAlert(ERROR, MISSING_SELECTION);
+            YourOrderController.displayAlert(ERROR, MISSING_SELECTION);
             return;
         }
 
         // if no quantity was selected
         if(donutQuantityComboBox.getSelectionModel().getSelectedItem() == null) {
-            displayAlert(ERROR, MISSING_QUANITITY);
+            YourOrderController.displayAlert(ERROR, MISSING_QUANITITY);
             return;
         }
 
