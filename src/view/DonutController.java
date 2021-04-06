@@ -21,6 +21,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 
+/**
+ * DonutController class handles inputs from the ordering donuts GUI and defines all actions and helper methods relating to events triggered by the GUI
+ *
+ * @author Hugo De Moraes, Jonathan Dong
+ */
 public class DonutController implements Initializable {
     private static Order currentOrder;
     private static Double subtotal= 0.00;
@@ -53,6 +58,10 @@ public class DonutController implements Initializable {
     @FXML
     private TextField subTotalField;
 
+    /**
+     * default constructor for DonutController, initializes currentOrder to be a new Order object and triggers adjustSubTotal and adjustCurrentOrderList
+     * when Observable List for Order is changed
+     */
     public DonutController(){
         currentOrder = new Order(change -> {
             adjustSubTotal();
@@ -60,19 +69,33 @@ public class DonutController implements Initializable {
         });
     }
 
+    /**
+     * getter method for currentOrder attribute
+     * @return currentOrder Order
+     */
     public static Order getCurrentOrder(){
         return (currentOrder);
     }
+
+    /**
+     * getter method for the current Order's subtotal
+     * @return double value for subtotal
+     */
     public static Double getCurrentSubtotal(){
         return (subtotal);
     }
 
-
+    /**
+     * adjusts subtotal whenever a menuitem is added or removed
+     */
     private void adjustSubTotal() {
         subtotal = currentOrder.getOrderSubtotal();
         subTotalField.setText((RoundTo2Decimals(currentOrder.getOrderSubtotal())));
     }
 
+    /**
+     * adjusts order list whenever a menuitem is added or removed
+     */
     private void adjustCurrentOrderList() {
         // initialize a new map
         HashMap<DonutFlavor, Integer> order = new HashMap<>();
@@ -94,6 +117,9 @@ public class DonutController implements Initializable {
         });
     }
 
+    /**
+     * handles actions when adding a Donut to the current temporary order
+     */
     @FXML
     private void addDonutToTemp() {
         // if empty
@@ -125,6 +151,9 @@ public class DonutController implements Initializable {
         }
     }
 
+    /**
+     * handles actions when user removes donut from current temp order
+     */
     @FXML
     private void removeDonutFromTemp(){
         // if empty
@@ -162,11 +191,21 @@ public class DonutController implements Initializable {
         }
     }
 
+    /**
+     * returns a formatted string to two decimal places
+     * @param val double to be formatted
+     * @return a properly formatted string
+     */
     public String RoundTo2Decimals(double val) {
         DecimalFormat df2 = new DecimalFormat("##0.00");
         return (df2.format(val));
     }
 
+    /**
+     * displays an alert popup with a given title and message
+     * @param title
+     * @param message
+     */
     private static void displayAlert(String title, String message){
         Stage alertWindow = new Stage();
         alertWindow.setTitle(title);
@@ -186,6 +225,11 @@ public class DonutController implements Initializable {
 
     }
 
+    /**
+     * dictates actions after donut GUI is created
+     * @param url url
+     * @param resourceBundle resourcebundle
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
        // loadDonutList();
@@ -194,7 +238,10 @@ public class DonutController implements Initializable {
         subTotalField.setEditable(false);
     }
 
-
+    /**
+     * pulls up the your order GUI after user presses Add to Order button
+     * @throws IOException
+     */
     @FXML
     private void loadyourOrder() throws IOException {
 
@@ -228,6 +275,9 @@ public class DonutController implements Initializable {
 
     }
 
+    /**
+     * populates the donutTypes in donutTypeComboBox
+     */
     @FXML
     private void loadDonutType(){
         for(DonutType type : DonutType.values()) {
@@ -235,6 +285,9 @@ public class DonutController implements Initializable {
         }
     }
 
+    /**
+     * populates the donut quantities in donutQuantityComboBox
+     */
     @FXML
     private void loadDonutQuantity(){
         for(String amount : AVAILABLE_QUANTITIES) {
@@ -243,6 +296,10 @@ public class DonutController implements Initializable {
         donutQuantityComboBox.setPromptText("Quantity");
     }
 
+    /**
+     * displays appropriate donut flavors after donut type has been selected
+     * @param event
+     */
     @FXML
     private void handleSelectDonutType(ActionEvent event){
 
@@ -257,11 +314,7 @@ public class DonutController implements Initializable {
         }
     }
 
-    @FXML
-    private void addToOrder() throws IOException {
-//        Context.getInstance().getStoreOrders().add(currentOrder);
-//        Controller.loadMainMenu();
-    }
+
 }
 
 

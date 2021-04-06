@@ -20,7 +20,7 @@ import java.text.DecimalFormat;
 import java.util.*;
 
 public class StoreOrderController implements Initializable {
-    private StoreOrders thisstoresorders= YourOrderController.getStoreOrders();
+    private StoreOrders thisStoresOrders= YourOrderController.getStoreOrders();
 
 
     private UUID currentOrderUUID;
@@ -37,16 +37,15 @@ public class StoreOrderController implements Initializable {
     private Button exportBtn;
 
     public StoreOrderController() {
- //       thisstoresorders = new StoreOrders(change -> {
-  //
- //     });
+
 
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        loadOrdernumbers();
         //populate order numbers
+        loadOrdernumbers();
+        
 
         storeOrderTotal.setEditable(false);
 
@@ -54,8 +53,8 @@ public class StoreOrderController implements Initializable {
 
     @FXML
     private void loadOrdernumbers() {
-        //StoreOrders thisstoresorders = YourOrderController.getStoreOrders();
-        for (application.Order o : thisstoresorders.getOrders()) {
+       
+        for (application.Order o : thisStoresOrders.getOrders()) {
             orderNumbercombobox.getItems().add(o.getOrderNumber().toString());
         }
     }
@@ -66,11 +65,11 @@ public class StoreOrderController implements Initializable {
             return;
         }
         currentOrderUUID = UUID.fromString(orderNumbercombobox.getSelectionModel().getSelectedItem());
-      //  StoreOrders thisstoresorders = YourOrderController.getStoreOrders();
+      
         double currentOrderTotal =0;
 
 
-        for (application.Order o : thisstoresorders.getOrders()) {
+        for (application.Order o : thisStoresOrders.getOrders()) {
             if (o.getOrderNumber().equals(currentOrderUUID)) {
                 currentOrderTotal = o.getOrderFinalTotal();
 
@@ -107,7 +106,7 @@ public class StoreOrderController implements Initializable {
         //update total textfield
         currentOrderUUID = UUID.fromString(orderNumbercombobox.getSelectionModel().getSelectedItem());
 
-        for (application.Order o : thisstoresorders.getOrders()) {
+        for (application.Order o : thisStoresOrders.getOrders()) {
             if (o.getOrderNumber().equals(currentOrderUUID)) {
                double currentOrderTotal = o.getOrderFinalTotal();
 
@@ -119,7 +118,7 @@ public class StoreOrderController implements Initializable {
 
     @FXML
     private void cancelOrder(){
-        //StoreOrders thisstoresorders = YourOrderController.getStoreOrders();
+       
         // if no order is selected then we cannot cancel!
         if (orderNumbercombobox.getSelectionModel().getSelectedItem() == null){
             displayAlert("Error", "No Order Selected ");
@@ -128,33 +127,30 @@ public class StoreOrderController implements Initializable {
 
         currentOrderUUID = UUID.fromString(orderNumbercombobox.getSelectionModel().getSelectedItem());
 
-        for (application.Order o : thisstoresorders.getOrders()) {
+        for (application.Order o : thisStoresOrders.getOrders()) {
             if (o.getOrderNumber().equals(currentOrderUUID)) {
 
                 Platform.runLater(()-> {
-               // System.out.println("removing order");
-                            thisstoresorders.remove(o);
+               
+                            thisStoresOrders.remove(o);
                             storeOrderTotal.setText("");
                             storeOrderListView.getItems().clear();
                        });
 
-                //for testing purposes only
+                
 
 
             }
         }
 
 
-        for (application.Order o : thisstoresorders.getOrders()) {
-            System.out.println(o.getOrderNumber().toString());
-        }
 
-      //  Platform.runLater(()-> {
-          //  orderNumbercombobox.getSelectionModel().clearSelection();
+
+      
             orderNumbercombobox.getItems().removeAll(orderNumbercombobox.getSelectionModel().getSelectedItem());
-           // loadOrdernumbers();
+         
 
-  //      });
+ 
 
 
 
@@ -163,6 +159,17 @@ public class StoreOrderController implements Initializable {
 
     @FXML
     private void handleExport(){
+
+
+            if (thisStoresOrders.getOrders().isEmpty()){
+                displayAlert("Error", "No Store Orders to export");
+                return;
+            }
+
+
+
+
+
         FileChooser chooser = new FileChooser();
         chooser.setTitle("Open Target File for the Export");
         chooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Text Files", "*.txt"),
@@ -178,14 +185,11 @@ public class StoreOrderController implements Initializable {
             }
 
             FileWriter writer = new FileWriter(targetFile);
-            // loop through all people in company
-//            if (isEmpty()) {
-//                return IoFields.EMPTY_DB_LOG;
-//
-//            }
+            //we wont allow user to export if store orders is blank
+
 
             String output = "";
-            for (application.Order o : thisstoresorders.getOrders()) {
+            for (application.Order o : thisStoresOrders.getOrders()) {
 
 
                    double currentOrderTotal = o.getOrderFinalTotal();
@@ -219,21 +223,7 @@ public class StoreOrderController implements Initializable {
 
 
             }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+            
 
             writer.write(output);
             writer.close();

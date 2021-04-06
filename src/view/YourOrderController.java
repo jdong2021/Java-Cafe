@@ -77,6 +77,7 @@ public class YourOrderController implements Initializable {
        myStoreOrders.add(DonutController.getCurrentOrder());
        DonutController.getCurrentOrder().setTotal(totalTextField.getText());
 
+       //check if empty order
        if(totalTextField.getText().equals("0.00")){
            displayAlert("Error", "Order is empty");
            return;
@@ -154,9 +155,7 @@ public class YourOrderController implements Initializable {
         loadSubtotalInfo();
         calculatesalestax();
         calculatetotal();
-//        for (MenuItem m : currentOrder.getCurrentOrder()) {
-//            if (o.getOrderNumber().equals(currentOrderUUID)) {
-//
+
             }
 
     private static void displayAlert(String title, String message){
