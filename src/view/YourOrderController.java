@@ -19,13 +19,8 @@ import java.util.HashMap;
 import java.util.ResourceBundle;
 
 public class YourOrderController implements Initializable {
-    private static StoreOrders myStoreOrders = new StoreOrders();
     private static final double SALES_TAX_PERCENT = 0.06625;
-
-
-    public static StoreOrders getStoreOrders(){
-        return myStoreOrders;
-    }
+    Order yourOrder;
 
     @FXML
     private ListView<String> myOrder;
@@ -40,42 +35,77 @@ public class YourOrderController implements Initializable {
     @FXML
     private Button removeItemBtn;
 
+    public YourOrderController() {
+        yourOrder = OrderController.getCurrentOrder();
+    }
 
    @FXML
    public void loadOrderInfo(){
-       Order currentOrder = DonutController.getCurrentOrder();
-        // initialize a new map
-       HashMap<DonutFlavor, Integer> order = new HashMap<>();
+       Order currentOrder = OrderController.getCurrentOrder();
 
-       // reduce items in order to flavor selection and amounts
-       for(application.MenuItem item : currentOrder.getCurrentOrder()) {
-           DonutFlavor selectedFlavor = ((Donut) item).getFlavor();
-           if(order.containsKey(selectedFlavor)) {
-               order.put(selectedFlavor, order.get(selectedFlavor) + 1);
-           } else {
-               order.put(selectedFlavor, 1);
+       // initialize a new map
+       HashMap<Object, Integer> order = new HashMap<>();
+
+       for(MenuItem item : currentOrder.getOrder()) {
+           if(item instanceof Donut) {
+               // handle donut
+               DonutFlavor selectedFlavor = ((Donut) item).getFlavor();
+               if(order.containsKey(selectedFlavor)) {
+                   order.put(selectedFlavor, order.get(selectedFlavor) + 1);
+               } else {
+                   order.put(selectedFlavor, 1);
+               }
+           }
+           // handle coffee
+           else {
+               if(order.containsKey(item)) {
+                   order.put(item, order.get(item) + 1);
+               } else {
+                   order.put(item, 1);
+               }
            }
        }
+
+//       // check if donut
+//       if(currentOrder.getCurrentOrder().get(0) instanceof Donut) {
+//           // reduce items in order to flavor selection and amounts
+//           for(MenuItem item : currentOrder.getCurrentOrder()) {
+//               DonutFlavor selectedFlavor = ((Donut) item).getFlavor();
+//               if(order.containsKey(selectedFlavor)) {
+//                   order.put(selectedFlavor, order.get(selectedFlavor) + 1);
+//               } else {
+//                   order.put(selectedFlavor, 1);
+//               }
+//           }
+//       }
+//       // else is coffee
+//       else {
+//           for(MenuItem item : currentOrder.getCurrentOrder()) {
+//               if(order.containsKey(item)) {
+//                   order.put(item, order.get(item) + 1);
+//               } else {
+//                   order.put(item, 1);
+//               }
+//           }
+//       }
 
        myOrder.getItems().clear();
 
        order.forEach((k,v) -> {
-           myOrder.getItems().add(k.getLabel() + " " + v);
+           myOrder.getItems().add(k + " " + v);
        });
    }
 
    @FXML
    public void loadSubtotalInfo(){
-       yourOrderSubtotal.setText(RoundTo2Decimals(DonutController.getCurrentSubtotal()));
+       // yourOrderSubtotal.setText(RoundTo2Decimals(OrderController.getCurrentSubtotal()));
    }
 
    @FXML
    public void loadStoreOrders() throws IOException {
-       myStoreOrders.add(DonutController.getCurrentOrder());
-       DonutController.getCurrentOrder().setTotal(totalTextField.getText());
-
-
-
+       // yourOrder.add(OrderController.getCurrentOrder());
+       // OrderController.getCurrentOrder().setTotal(totalTextField.getText());
+       StoreOrderController.storeOrders.add(yourOrder);
 
 
        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../view/storeorders.fxml"));
@@ -84,17 +114,13 @@ public class YourOrderController implements Initializable {
        stage.setScene(new Scene(root1));
        stage.show();
 
-
-
-
        stage = (Stage) placeOrderBtn.getScene().getWindow();
        stage.close();
-
-
    }
+
    @FXML
    private void calculatesalestax(){
-        salestax.setText(RoundTo2Decimals(DonutController.getCurrentSubtotal() * SALES_TAX_PERCENT));
+        salestax.setText(RoundTo2Decimals(OrderController.getCurrentSubtotal() * SALES_TAX_PERCENT));
    }
 
    @FXML
@@ -113,8 +139,7 @@ public class YourOrderController implements Initializable {
     @FXML
     private void removeItem(){
        //iterate thru order to find menuitem to remvoe
-        Order currentOrder = DonutController.getCurrentOrder();
-
+        Order currentOrder = OrderController.getCurrentOrder();
 
         // get index to split
         // get last occurrence of space character to separate label and amounr
@@ -124,7 +149,7 @@ public class YourOrderController implements Initializable {
         ArrayList<Donut> donutsToDelete = new ArrayList<>();
 
         // for each item in current order
-        currentOrder.getCurrentOrder().forEach((item) -> {
+        currentOrder.getOrder().forEach((item) -> {
             Donut donut = (Donut) item;
             // get donuts that match selected flavor to delete
             if(donut.getFlavor() == FLAVOR_TO_REMOVE) {
@@ -142,16 +167,13 @@ public class YourOrderController implements Initializable {
         loadSubtotalInfo();
         calculatesalestax();
         calculatetotal();
-//        for (MenuItem m : currentOrder.getCurrentOrder()) {
-//            if (o.getOrderNumber().equals(currentOrderUUID)) {
-//
-            }
+   }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
             loadOrderInfo();
             loadSubtotalInfo();
-            calculatesalestax();
-            calculatetotal();
+//            calculatesalestax();
+//            calculatetotal();
     }
 }

@@ -6,7 +6,7 @@ import java.util.UUID;
 
 public class Order implements Customizable {
     private final UUID orderNumber;
-    private ObservableList<MenuItem> currentOrder = FXCollections.observableArrayList();
+    private final ObservableList<MenuItem> currentOrder = FXCollections.observableArrayList();
     private static final double TAX_MULTIPLIER = 1.06625;
     private String total = "";
 
@@ -14,10 +14,10 @@ public class Order implements Customizable {
         orderNumber = UUID.randomUUID();
     }
 
-    public Order(javafx.collections.ListChangeListener<MenuItem> listener) {
-        orderNumber = UUID.randomUUID();
-        currentOrder.addListener(listener);
-    }
+//    public Order(javafx.collections.ListChangeListener<MenuItem> listener) {
+//        orderNumber = UUID.randomUUID();
+//        currentOrder.addListener(listener);
+//    }
 
     public void addListener(javafx.collections.ListChangeListener<MenuItem> listener) {
         currentOrder.addListener(listener);
@@ -39,18 +39,18 @@ public class Order implements Customizable {
 
     // maybe i should make a add method along with a quantity?
     //adding multiple menuitems to order
-    public void addMultipleDonuts(Object obj, int quantity){
-        for(int i =0; i <quantity;i++){
-            add(obj);
-        }
-    }
-
-    //removing multiple menuitems to order
-    public void removeMultipleDonuts(Object obj, int quantity){
-        for(int i =0; i < quantity; i++){
-            remove(obj);
-        }
-    }
+//    public void addMultipleDonuts(Object obj, int quantity){
+//        for(int i =0; i <quantity;i++){
+//            add(obj);
+//        }
+//    }
+//
+//    //removing multiple menuitems to order
+//    public void removeMultipleDonuts(Object obj, int quantity){
+//        for(int i =0; i < quantity; i++){
+//            remove(obj);
+//        }
+//    }
 
     // adding menuitem to order
     public boolean add(Object obj) {
@@ -98,7 +98,7 @@ public class Order implements Customizable {
         this.total = val;
     }
 
-    public ObservableList<MenuItem> getCurrentOrder() { return currentOrder; }
+    public ObservableList<MenuItem> getOrder() { return currentOrder; }
 
     public UUID getOrderNumber() {
         return orderNumber;

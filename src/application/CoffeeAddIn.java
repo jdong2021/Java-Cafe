@@ -12,6 +12,11 @@ public enum CoffeeAddIn {
         this.label = label;
     }
 
+    @Override
+    public String toString() {
+        return label;
+    }
+
     public String getLabel() {
         return label;
     }

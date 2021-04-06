@@ -31,10 +31,7 @@ public class MainMenuController implements Initializable {
     @FXML
     private Button storeOrdersBtn;
 
-    public MainMenuController(){
-        storeOrders = new StoreOrders();
-    }
-    private StoreOrders storeOrders;
+    public MainMenuController(){ }
 
     public void loadMainMenu() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../view/mainmenu.fxml"));
@@ -70,6 +67,7 @@ public class MainMenuController implements Initializable {
         stage.setScene(new Scene(root1));
         stage.show();
     }
+
     @FXML
     private void loadStoreOrders() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../view/storeorders.fxml"));

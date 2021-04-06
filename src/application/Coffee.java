@@ -3,9 +3,11 @@ package application;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class Coffee extends MenuItem implements Customizable {
-    private Set<CoffeeAddIn> selectedAddIns = new HashSet();
+    private final Set<CoffeeAddIn> selectedAddIns = new HashSet<>();
+
     private CoffeeSize selectedSize;
 
     public Coffee() {
@@ -21,15 +23,11 @@ public class Coffee extends MenuItem implements Customizable {
             itemPrice += selectedSize.getPrice();
         }
         // if user selected addIns
-        if(!Objects.isNull(selectedAddIns)) {
+        if(!selectedAddIns.isEmpty()) {
             // addIns are all equal size
             // get number of addIns and multiply by addIn price
             itemPrice += ADD_IN_PRICE * selectedAddIns.size();
         }
-
-        System.out.println(selectedSize);
-        System.out.println(selectedAddIns);
-        System.out.println(itemPrice);
         return itemPrice;
     }
 
@@ -92,11 +90,42 @@ public class Coffee extends MenuItem implements Customizable {
         return false;
     }
 
+    public CoffeeSize getSelectedSize() {
+        return selectedSize;
+    }
+
+    public Set<CoffeeAddIn> getSelectedAddIns() {
+        return selectedAddIns;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+
+        if (!(o instanceof Coffee)) {
+            return false;
+        }
+
+        // typecast o to Employee so that we can compare data members
+        Coffee c = (Coffee) o;
+
+        if(selectedSize != c.getSelectedSize()) {
+            return false;
+        }
+
+        return selectedAddIns.equals(c.getSelectedAddIns());
+    }
+
     @Override
     public String toString() {
-        return "Coffee{" +
-                "selectedAddIns=" + selectedAddIns +
-                ", selectedSize=" + selectedSize +
-                '}';
+        return "Coffee - "
+                + selectedSize.toString()
+                + " - "
+                + selectedAddIns.stream()
+                .map(Object::toString)
+                .collect(Collectors.joining(", "));
+
     }
 }

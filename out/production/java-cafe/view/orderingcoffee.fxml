@@ -57,7 +57,7 @@
                   <ComboBox fx:id="coffeeQuantityComboBox" onAction="#onQuantitySelected" prefWidth="150.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
                   <ComboBox fx:id="coffeeSizeComboBox" onAction="#onSizeSelected" prefWidth="150.0" GridPane.columnIndex="2" />
                   <TextField fx:id="subTotalField" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="26.0" prefWidth="120.0" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-                  <Button mnemonicParsing="false" text="add to order" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+                  <Button fx:id="addToOrderBtn" mnemonicParsing="false" onAction="#loadyourOrder" text="add to order" GridPane.columnIndex="2" GridPane.rowIndex="3" />
                </children>
             </GridPane>
          </center>

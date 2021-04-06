@@ -29,6 +29,11 @@ public enum DonutFlavor {
         return donutType;
     }
 
+    @Override
+    public String toString() {
+        return label;
+    }
+
     public static DonutFlavor getFlavorByLabel(String label) {
         DonutFlavor selectedFlavor = null;
         for(DonutFlavor flavor : DonutFlavor.values()) {

@@ -21,6 +21,11 @@ public enum CoffeeSize implements PriceModifier {
         return label;
     }
 
+    @Override
+    public String toString() {
+        return label;
+    }
+
     public static CoffeeSize getSizeByLabel(String label) {
         CoffeeSize selectedSize = null;
         for(CoffeeSize size : CoffeeSize.values()) {

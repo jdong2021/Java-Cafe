@@ -20,40 +20,37 @@ import java.text.DecimalFormat;
 import java.util.*;
 
 public class StoreOrderController implements Initializable {
-    private StoreOrders thisstoresorders= YourOrderController.getStoreOrders();
-
+    static final StoreOrders storeOrders = new StoreOrders();
 
     private UUID currentOrderUUID;
+
     @FXML
     private ComboBox<String> orderNumbercombobox;
 
     @FXML
     private ListView<String> storeOrderListView;
+
     @FXML
     private TextField storeOrderTotal;
+
     @FXML
     private Button cancelOrderBtn;
+
     @FXML
     private Button exportBtn;
 
-    public StoreOrderController() {
- //       thisstoresorders = new StoreOrders(change -> {
-  //
- //     });
-
-    }
+    public StoreOrderController() { }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         loadOrdernumbers();
         //populate order numbers
-
     }
 
     @FXML
     private void loadOrdernumbers() {
         //StoreOrders thisstoresorders = YourOrderController.getStoreOrders();
-        for (application.Order o : thisstoresorders.getOrders()) {
+        for (Order o : storeOrders.getOrders()) {
             orderNumbercombobox.getItems().add(o.getOrderNumber().toString());
         }
     }
@@ -68,7 +65,7 @@ public class StoreOrderController implements Initializable {
         double currentOrderTotal =0;
 
 
-        for (application.Order o : thisstoresorders.getOrders()) {
+        for (Order o : storeOrders.getOrders()) {
             if (o.getOrderNumber().equals(currentOrderUUID)) {
                 currentOrderTotal = o.getOrderFinalTotal();
 
@@ -76,7 +73,7 @@ public class StoreOrderController implements Initializable {
                 HashMap<DonutFlavor, Integer> order = new HashMap<>();
 
                 // reduce items in order to flavor selection and amounts
-                for (MenuItem item : o.getCurrentOrder()) {
+                for (MenuItem item : o.getOrder()) {
                     DonutFlavor selectedFlavor = ((Donut) item).getFlavor();
                     if (order.containsKey(selectedFlavor)) {
                         order.put(selectedFlavor, order.get(selectedFlavor) + 1);
@@ -105,7 +102,7 @@ public class StoreOrderController implements Initializable {
         //update total textfield
         currentOrderUUID = UUID.fromString(orderNumbercombobox.getSelectionModel().getSelectedItem());
 
-        for (application.Order o : thisstoresorders.getOrders()) {
+        for (Order o : storeOrders.getOrders()) {
             if (o.getOrderNumber().equals(currentOrderUUID)) {
                double currentOrderTotal = o.getOrderFinalTotal();
 
@@ -120,12 +117,12 @@ public class StoreOrderController implements Initializable {
         //StoreOrders thisstoresorders = YourOrderController.getStoreOrders();
         currentOrderUUID = UUID.fromString(orderNumbercombobox.getSelectionModel().getSelectedItem());
 
-        for (application.Order o : thisstoresorders.getOrders()) {
+        for (Order o : storeOrders.getOrders()) {
             if (o.getOrderNumber().equals(currentOrderUUID)) {
 
                 Platform.runLater(()-> {
                // System.out.println("removing order");
-                            thisstoresorders.remove(o);
+                        storeOrders.remove(o);
                             storeOrderTotal.setText("");
                             storeOrderListView.getItems().clear();
                        });
@@ -137,7 +134,7 @@ public class StoreOrderController implements Initializable {
         }
 
 
-        for (application.Order o : thisstoresorders.getOrders()) {
+        for (Order o : storeOrders.getOrders()) {
             System.out.println(o.getOrderNumber().toString());
         }
 
@@ -177,7 +174,7 @@ public class StoreOrderController implements Initializable {
 //            }
 
             String output = "";
-            for (application.Order o : thisstoresorders.getOrders()) {
+            for (Order o : storeOrders.getOrders()) {
 
 
                    double currentOrderTotal = o.getOrderFinalTotal();
@@ -186,7 +183,7 @@ public class StoreOrderController implements Initializable {
                     HashMap<DonutFlavor, Integer> order = new HashMap<>();
 
                     // reduce items in order to flavor selection and amounts
-                    for (MenuItem item : o.getCurrentOrder()) {
+                    for (MenuItem item : o.getOrder()) {
                         DonutFlavor selectedFlavor = ((Donut) item).getFlavor();
                         if (order.containsKey(selectedFlavor)) {
                             order.put(selectedFlavor, order.get(selectedFlavor) + 1);

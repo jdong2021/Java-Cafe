@@ -1,6 +1,7 @@
 package view;
 import application.Donut;
 import application.*;
+import application.MenuItem;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -15,7 +16,6 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
-import java.text.DecimalFormat;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -46,17 +46,25 @@ public class DonutController extends OrderController implements Initializable {
     private Button removeDonutBtn;
 
     @FXML
-    private Button addtoOrderBtn;
+    private Button addToOrderBtn;
 
     @FXML
     private TextField subTotalField;
 
+    private Order tempOrder;
+
     public DonutController(){
         super();
-        super.addListener(change -> {
-            adjustSubTotal(subTotalField);
+        tempOrder = new Order();
+        tempOrder.addListener(change -> {
+            adjustSubTotal();
             adjustCurrentOrderList();
         });
+    }
+
+    private void adjustSubTotal() {
+        subtotal = tempOrder.getOrderSubtotal();
+        subTotalField.setText((RoundTo2Decimals(subtotal)));
     }
 
     private void adjustCurrentOrderList() {
@@ -64,7 +72,7 @@ public class DonutController extends OrderController implements Initializable {
         HashMap<DonutFlavor, Integer> order = new HashMap<>();
 
         // reduce items in order to flavor selection and amounts
-        for(application.MenuItem item : currentOrder.getCurrentOrder()) {
+        for(MenuItem item : tempOrder.getOrder()) {
             DonutFlavor selectedFlavor = ((Donut) item).getFlavor();
             if(order.containsKey(selectedFlavor)) {
                 order.put(selectedFlavor, order.get(selectedFlavor) + 1);
@@ -107,7 +115,7 @@ public class DonutController extends OrderController implements Initializable {
 
         // add to order
         for(int i = 0; i < SELECTED_AMOUNT; i++) {
-            currentOrder.add(new Donut(SELECTED_FLAVOR));
+            tempOrder.add(new Donut(SELECTED_FLAVOR));
         }
     }
 
@@ -133,7 +141,7 @@ public class DonutController extends OrderController implements Initializable {
         ArrayList<Donut> donutsToDelete = new ArrayList<>();
 
         // for each item in current order
-        currentOrder.getCurrentOrder().forEach((item) -> {
+        tempOrder.getOrder().forEach((item) -> {
             Donut donut = (Donut) item;
             // get donuts that match selected flavor to delete
             if(donut.getFlavor() == FLAVOR_TO_REMOVE) {
@@ -144,7 +152,7 @@ public class DonutController extends OrderController implements Initializable {
         // for each item to delete
         for(int i = 0; i < AMOUNT; i++) {
             // delete
-            currentOrder.remove(donutsToDelete.get(i));
+            tempOrder.remove(donutsToDelete.get(i));
         }
     }
 
@@ -195,6 +203,8 @@ public class DonutController extends OrderController implements Initializable {
             return;
         }
 
+        // add temp order to current order
+        tempOrder.getOrder().forEach(item -> currentOrder.add(item));
 
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../view/yourorder.fxml"));
         Parent root1 = (Parent) fxmlLoader.load();
@@ -202,9 +212,8 @@ public class DonutController extends OrderController implements Initializable {
         stage.setScene(new Scene(root1));
         stage.show();
 
-        stage = (Stage) addtoOrderBtn.getScene().getWindow();
+        stage = (Stage) addToOrderBtn.getScene().getWindow();
         stage.close();
-
     }
 
     @FXML
