@@ -49,14 +49,14 @@
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <CheckBox mnemonicParsing="false" text="Cream" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-                  <CheckBox mnemonicParsing="false" text="Milk" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-                  <CheckBox mnemonicParsing="false" text="Syrup" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
-                  <CheckBox mnemonicParsing="false" text="Caramel" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-                  <CheckBox mnemonicParsing="false" text="Whipped Cream" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
-                  <ComboBox fx:id="coffeeQuantityComboBox" prefWidth="150.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-                  <ComboBox fx:id="coffeeTypeComboBox" prefWidth="150.0" GridPane.columnIndex="2" />
-                  <TextField maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="26.0" prefWidth="120.0" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                  <CheckBox fx:id="creamCheckBox" mnemonicParsing="false" onAction="#onAddInSelected" text="Cream" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                  <CheckBox fx:id="milkCheckBox" mnemonicParsing="false" onAction="#onAddInSelected" text="Milk" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+                  <CheckBox fx:id="syrupCheckBox" mnemonicParsing="false" onAction="#onAddInSelected" text="Syrup" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
+                  <CheckBox fx:id="caramelCheckBox" mnemonicParsing="false" onAction="#onAddInSelected" text="Caramel" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+                  <CheckBox fx:id="whippedCreamCheckBox" mnemonicParsing="false" onAction="#onAddInSelected" text="Whipped Cream" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
+                  <ComboBox fx:id="coffeeQuantityComboBox" onAction="#addCoffeeToTemp" prefWidth="150.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                  <ComboBox fx:id="coffeeSizeComboBox" onAction="#onSizeSelected" prefWidth="150.0" GridPane.columnIndex="2" />
+                  <TextField fx:id="subTotalField" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="26.0" prefWidth="120.0" GridPane.columnIndex="2" GridPane.rowIndex="2" />
                   <Button mnemonicParsing="false" text="add to order" GridPane.columnIndex="2" GridPane.rowIndex="3" />
                </children>
             </GridPane>

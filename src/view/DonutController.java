@@ -21,9 +21,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 
-public class DonutController implements Initializable {
-    private static Order currentOrder;
-    private static Double subtotal;
+public class DonutController extends OrderController implements Initializable {
     private final String[] AVAILABLE_QUANTITIES = { "1","2","3", "4", "5", "6", "12" };
     private final String MISSING_SELECTION = "Please select a donut";
     private final String MISSING_QUANITITY = "Please select a quantity";
@@ -54,23 +52,11 @@ public class DonutController implements Initializable {
     private TextField subTotalField;
 
     public DonutController(){
-        currentOrder = new Order(change -> {
-            adjustSubTotal();
+        super();
+        super.addListener(change -> {
+            adjustSubTotal(subTotalField);
             adjustCurrentOrderList();
         });
-    }
-
-    public static Order getCurrentOrder(){
-        return (currentOrder);
-    }
-    public static Double getCurrentSubtotal(){
-        return (subtotal);
-    }
-
-
-    private void adjustSubTotal() {
-        subtotal = currentOrder.getOrderSubtotal();
-        subTotalField.setText((RoundTo2Decimals(currentOrder.getOrderSubtotal())));
     }
 
     private void adjustCurrentOrderList() {
@@ -162,11 +148,6 @@ public class DonutController implements Initializable {
         }
     }
 
-    public String RoundTo2Decimals(double val) {
-        DecimalFormat df2 = new DecimalFormat("##0.00");
-        return (df2.format(val));
-    }
-
     private static void displayAlert(String title, String message){
         Stage alertWindow = new Stage();
         alertWindow.setTitle(title);
@@ -188,7 +169,6 @@ public class DonutController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-       // loadDonutList();
         loadDonutType();
         loadDonutQuantity();
     }
@@ -244,9 +224,7 @@ public class DonutController implements Initializable {
 
     @FXML
     private void handleSelectDonutType(ActionEvent event){
-
         final DonutType SELECTED_DONUT_TYPE = DonutType.getTypeByLabel(donutTypeComboBox.getValue());
-
         donutlistView.getItems().clear();
 
         for(DonutFlavor flavor : DonutFlavor.values()) {
@@ -254,12 +232,6 @@ public class DonutController implements Initializable {
                 donutlistView.getItems().add(flavor.getLabel());
             }
         }
-    }
-
-    @FXML
-    private void addToOrder() throws IOException {
-//        Context.getInstance().getStoreOrders().add(currentOrder);
-//        Controller.loadMainMenu();
     }
 }
 

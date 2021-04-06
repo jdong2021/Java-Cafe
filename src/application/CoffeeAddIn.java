@@ -1,6 +1,6 @@
 package application;
 
-public enum CoffeeAddIns {
+public enum CoffeeAddIn {
     CREAM("Cream"),
     SYRUP("Syrup"),
     MILK("Milk"),
@@ -8,8 +8,7 @@ public enum CoffeeAddIns {
     WHIPPED_CREAM("Whipped Cream");
 
     private final String label;
-
-    CoffeeAddIns(String label) {
+    CoffeeAddIn(String label) {
         this.label = label;
     }
 

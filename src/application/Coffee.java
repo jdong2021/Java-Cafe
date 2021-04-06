@@ -5,10 +5,10 @@ import java.util.Objects;
 import java.util.Set;
 
 public class Coffee extends MenuItem implements Customizable {
-    private Set<CoffeeAddIns> selectedAddIns = new HashSet();
-    private CoffeeSizes selectedSize;
+    private Set<CoffeeAddIn> selectedAddIns = new HashSet();
+    private CoffeeSize selectedSize;
 
-    Coffee() {
+    public Coffee() {
         super();
     }
 
@@ -31,9 +31,9 @@ public class Coffee extends MenuItem implements Customizable {
 
     public boolean add(Object obj) {
         // handle addIn
-        if(obj instanceof CoffeeAddIns) {
+        if(obj instanceof CoffeeAddIn) {
             // cast to addIns enum
-            CoffeeAddIns selectedAddIn = (CoffeeAddIns) obj;
+            CoffeeAddIn selectedAddIn = (CoffeeAddIn) obj;
             // if not already selected
             if(!this.selectedAddIns.contains(selectedAddIn)) {
                 // add to set
@@ -47,9 +47,9 @@ public class Coffee extends MenuItem implements Customizable {
     }
 
     public boolean remove(Object obj) {
-        if(obj instanceof CoffeeAddIns) {
+        if(obj instanceof CoffeeAddIn) {
             // cast to addIns enum
-            CoffeeAddIns selectedAddIn = (CoffeeAddIns) obj;
+            CoffeeAddIn selectedAddIn = (CoffeeAddIn) obj;
             // if selected
             if(selectedAddIns.contains(selectedAddIn)) {
                 // remove from set
@@ -64,9 +64,9 @@ public class Coffee extends MenuItem implements Customizable {
 
     public boolean setSize(Object obj) {
         // handle size
-        if(obj instanceof CoffeeSizes) {
+        if(obj instanceof CoffeeSize) {
             // cast to sizes enum
-            CoffeeSizes selectedSize = (CoffeeSizes) obj;
+            CoffeeSize selectedSize = (CoffeeSize) obj;
             // if null
             if(this.selectedSize == null) {
                 // set new selected size

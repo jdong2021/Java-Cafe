@@ -19,6 +19,10 @@ public class Order implements Customizable {
         currentOrder.addListener(listener);
     }
 
+    public void addListener(javafx.collections.ListChangeListener<MenuItem> listener) {
+        currentOrder.addListener(listener);
+    }
+
     public double getOrderSubtotal() {
         double subTotal = 0;
         // map over each item type in order
@@ -99,4 +103,6 @@ public class Order implements Customizable {
     public UUID getOrderNumber() {
         return orderNumber;
     }
+
+    public boolean isEmpty() { return currentOrder.isEmpty(); }
 }
