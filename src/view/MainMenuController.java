@@ -36,16 +36,17 @@ public class MainMenuController implements Initializable {
     @FXML
     private Button storeOrdersBtn;
 
-    public MainMenuController(){ }
+    /**
+     * Constructor for MainMenu Controller
+     */
+    public MainMenuController(){
 
-    public void loadMainMenu() throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../view/mainmenu.fxml"));
-        Parent root1 = fxmlLoader.load();
-        Stage stage = new Stage();
-        stage.setScene(new Scene(root1));
-        stage.show();
     }
 
+    /**
+     * loadOrderDonuts loads up the GUI for ordering donuts
+     * @throws IOException exception to be thrown if fxml not found
+     */
     @FXML
     private void loadOrderDonuts() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../view/orderingdonuts.fxml"));
@@ -54,7 +55,10 @@ public class MainMenuController implements Initializable {
         stage.setScene(new Scene(root1));
         stage.show();
     }
-
+    /**
+     * loadOrderCoffee loads up the GUI for ordering coffee
+     * @throws IOException exception to be thrown if fxml not found
+     */
     @FXML
     private void loadOrderCoffee() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../view/orderingcoffee.fxml"));
@@ -63,7 +67,10 @@ public class MainMenuController implements Initializable {
         stage.setScene(new Scene(root1));
         stage.show();
     }
-
+    /**
+     * loadYourOrder loads up the GUI for the current order. If user already placed their order, the the GUI will be blank
+     * @throws IOException exception to be thrown if fxml not found
+     */
     @FXML
     private void loadYourOrder() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../view/yourorder.fxml"));
@@ -72,7 +79,10 @@ public class MainMenuController implements Initializable {
         stage.setScene(new Scene(root1));
         stage.show();
     }
-
+    /**
+     * loadStoreOrders loads up the GUI for all store Orders. Users have the option to export store orders as well
+     * @throws IOException exception to be thrown if fxml not found
+     */
     @FXML
     private void loadStoreOrders() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../view/storeorders.fxml"));
@@ -82,7 +92,11 @@ public class MainMenuController implements Initializable {
         stage.show();
     }
 
-
+    /**
+     * dictates actions after main menu GUI is created
+     * @param url url
+     * @param resourceBundle resourcebundle
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 

@@ -190,7 +190,7 @@ public class DonutController extends OrderController implements Initializable {
 
     /**
      * pulls up the your order GUI after user presses Add to Order button
-     * @throws IOException
+     * @throws IOException exception to be thrown
      */
     @FXML
     private void loadyourOrder() throws IOException {

@@ -38,18 +38,29 @@ public class YourOrderController implements Initializable {
     @FXML
     private Button removeItemBtn;
 
+    /**
+     * default constructor for YourOrderController, initializes yourOrder to be the current Order and adds a listener to ensure
+     * that subtotalinfo, salestax, and total are changes whenever the order is changed
+     */
     public YourOrderController() {
         yourOrder = OrderController.getCurrentOrder();
+        yourOrder.addListener(change -> {
+            loadOrderInfo();
+            loadSubtotalInfo();
+
+            calculatesalestax();
+            calculatetotal();
+        });
     }
 
    @FXML
    public void loadOrderInfo(){
-       Order currentOrder = OrderController.getCurrentOrder();
+       //Order currentOrder = OrderController.getCurrentOrder();
 
        // initialize a new map
        HashMap<Object, Integer> order = new HashMap<>();
 
-       for(MenuItem item : currentOrder.getOrder()) {
+       for(MenuItem item : yourOrder.getOrder()) {
            if(item instanceof Donut) {
                // handle donut
                DonutFlavor selectedFlavor = ((Donut) item).getFlavor();
@@ -101,13 +112,21 @@ public class YourOrderController implements Initializable {
 
    @FXML
    public void loadSubtotalInfo(){
-       // yourOrderSubtotal.setText(RoundTo2Decimals(OrderController.getCurrentSubtotal()));
+
+       yourOrderSubtotal.setText(RoundTo2Decimals(yourOrder.getOrderSubtotal()));
+
+
+        //yourOrderSubtotal.setText(RoundTo2Decimals(OrderController.getCurrentSubtotal()));
    }
 
    @FXML
    public void loadStoreOrders() throws IOException {
        // yourOrder.add(OrderController.getCurrentOrder());
        // OrderController.getCurrentOrder().setTotal(totalTextField.getText());
+
+       if(totalTextField.getText().equals("0.00") || totalTextField.getText().equals("")){
+           displayAlert("Error", "Cannot place empty order");
+       }
        StoreOrderController.storeOrders.add(yourOrder);
 
 
@@ -123,14 +142,14 @@ public class YourOrderController implements Initializable {
 
    @FXML
    private void calculatesalestax(){
-        salestax.setText(RoundTo2Decimals(OrderController.getCurrentSubtotal() * SALES_TAX_PERCENT));
+        salestax.setText(RoundTo2Decimals(yourOrder.getOrderSubtotal() * SALES_TAX_PERCENT));
    }
 
    @FXML
    private void calculatetotal(){
-       // double subtotalval = Double.parseDouble(yourOrderSubtotal.getText());
-       // double salestaxval = Double.parseDouble(salestax.getText());
-       // totalTextField.setText((RoundTo2Decimals(subtotalval+salestaxval)));
+        double subtotalval = Double.parseDouble(yourOrderSubtotal.getText());
+        double salestaxval = Double.parseDouble(salestax.getText());
+        totalTextField.setText((RoundTo2Decimals(subtotalval+salestaxval)));
    }
 
     public static String RoundTo2Decimals(double val) {
@@ -141,7 +160,7 @@ public class YourOrderController implements Initializable {
     @FXML
     private void removeItem(){
        //iterate thru order to find menuitem to remvoe
-        Order currentOrder = OrderController.getCurrentOrder();
+       // Order currentOrder = OrderController.getCurrentOrder();
 
         //if there is no selected item to remove
         if (myOrder.getSelectionModel().getSelectedItem() == null){
@@ -157,7 +176,7 @@ public class YourOrderController implements Initializable {
         ArrayList<Donut> donutsToDelete = new ArrayList<>();
 
         // for each item in current order
-        currentOrder.getOrder().forEach((item) -> {
+        yourOrder.getOrder().forEach((item) -> {
             Donut donut = (Donut) item;
             // get donuts that match selected flavor to delete
             if(donut.getFlavor() == FLAVOR_TO_REMOVE) {
@@ -168,13 +187,13 @@ public class YourOrderController implements Initializable {
         // for each item to delete
         for(int i = 0; i < AMOUNT; i++) {
             // delete
-            currentOrder.remove(donutsToDelete.get(i));
+            yourOrder.remove(donutsToDelete.get(i));
         }
 
-        loadOrderInfo();
-        loadSubtotalInfo();
-        calculatesalestax();
-        calculatetotal();
+//        loadOrderInfo();
+//        loadSubtotalInfo();
+//        calculatesalestax();
+//        calculatetotal();
    }
 
     public static void displayAlert(String title, String message){
