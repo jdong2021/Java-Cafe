@@ -29,10 +29,9 @@ import java.util.ResourceBundle;
 public class DonutController extends OrderController implements Initializable {
     private final String[] AVAILABLE_QUANTITIES = { "1","2","3", "4", "5", "6", "12" };
     private final String MISSING_SELECTION = "Please select a donut";
-    private final String MISSING_QUANITITY = "Please select a quantity";
+    private final String MISSING_QUANTITY = "Please select a quantity";
     private final String ERROR = "Error";
     private final String EMPTY_LIST = "List is empty";
-    private final String QUANTITY_LABEL = "QUANTITY";
 
     @FXML
     private ListView<String> donutPickedlistView;
@@ -58,7 +57,7 @@ public class DonutController extends OrderController implements Initializable {
     @FXML
     private TextField subTotalField;
 
-    private Order tempOrder;
+    private final Order tempOrder;
 
     /**
      * default constructor for DonutController, initializes currentOrder to be a new Order object and triggers adjustSubTotal and adjustCurrentOrderList
@@ -99,9 +98,7 @@ public class DonutController extends OrderController implements Initializable {
 
         donutPickedlistView.getItems().clear();
 
-        order.forEach((donut, amount) -> {
-            donutPickedlistView.getItems().add(donut.getLabel() + " " + amount);
-        });
+        order.forEach((donut, amount) -> donutPickedlistView.getItems().add("Donut " + donut.getLabel() + " " + amount));
     }
 
     /**
@@ -109,23 +106,7 @@ public class DonutController extends OrderController implements Initializable {
      */
     @FXML
     private void addDonutToTemp() {
-        // if empty
-        if(donutlistView.getSelectionModel().isEmpty()) {
-            YourOrderController.displayAlert(ERROR, EMPTY_LIST);
-            return;
-        }
-
-        // if no donut was selected
-        if(donutlistView.getSelectionModel().getSelectedItem() == null) {
-            YourOrderController.displayAlert(ERROR, MISSING_SELECTION);
-            return;
-        }
-
-        // if no quantity was selected
-        if(donutQuantityComboBox.getSelectionModel().getSelectedItem() == null) {
-            YourOrderController.displayAlert(ERROR, MISSING_QUANITITY);
-            return;
-        }
+        if (!checkAllSelected()) return;
 
         // match the UI string to the enum
         final DonutFlavor SELECTED_FLAVOR = DonutFlavor.getFlavorByLabel(donutlistView.getSelectionModel().getSelectedItem());
@@ -138,13 +119,38 @@ public class DonutController extends OrderController implements Initializable {
         }
     }
 
+    private boolean checkAllSelected() {
+        // if empty
+        if (donutListViewIsEmpty(donutlistView)) {
+            YourOrderController.displayAlert(ERROR, EMPTY_LIST);
+            return false;
+        }
+
+        // if no donut was selected
+        if (donutlistView.getSelectionModel().getSelectedItem() == null) {
+            YourOrderController.displayAlert(ERROR, MISSING_SELECTION);
+            return false;
+        }
+
+        // if no quantity was selected
+        if (donutQuantityComboBox.getSelectionModel().getSelectedItem() == null) {
+            YourOrderController.displayAlert(ERROR, MISSING_QUANTITY);
+            return false;
+        }
+        return true;
+    }
+
+    private boolean donutListViewIsEmpty(ListView<String> donutlistView) {
+        return donutlistView.getSelectionModel().isEmpty();
+    }
+
     /**
      * handles actions when user removes donut from current temp order
      */
     @FXML
     private void removeDonutFromTemp(){
         // if empty
-        if(donutPickedlistView.getSelectionModel().isEmpty()) {
+        if(donutListViewIsEmpty(donutPickedlistView)) {
             YourOrderController.displayAlert(ERROR, EMPTY_LIST);
             return;
         }
@@ -156,7 +162,7 @@ public class DonutController extends OrderController implements Initializable {
         }
 
         // get index to split
-        // get last occurrence of space character to separate label and amounr
+        // get last occurrence of space character to separate label and amount
         final int INDEX = donutPickedlistView.getSelectionModel().getSelectedItem().lastIndexOf(" ");
         final DonutFlavor FLAVOR_TO_REMOVE = DonutFlavor.getFlavorByLabel(donutPickedlistView.getSelectionModel().getSelectedItem().substring(0, INDEX));
         final int AMOUNT = Integer.parseInt(donutPickedlistView.getSelectionModel().getSelectedItem().substring(INDEX+1));
@@ -195,25 +201,8 @@ public class DonutController extends OrderController implements Initializable {
      * @throws IOException exception to be thrown
      */
     @FXML
-    private void loadyourOrder() throws IOException {
-
-        // if empty
-        if(donutlistView.getSelectionModel().isEmpty()) {
-            YourOrderController.displayAlert(ERROR, EMPTY_LIST);
-            return;
-        }
-
-        // if no donut was selected
-        if(donutlistView.getSelectionModel().getSelectedItem() == null) {
-            YourOrderController.displayAlert(ERROR, MISSING_SELECTION);
-            return;
-        }
-
-        // if no quantity was selected
-        if(donutQuantityComboBox.getSelectionModel().getSelectedItem() == null) {
-            YourOrderController.displayAlert(ERROR, MISSING_QUANITITY);
-            return;
-        }
+    private void loadYourOrder() throws IOException {
+        if (!checkAllSelected()) return;
 
         // add temp order to current order
         tempOrder.getOrder().forEach(item -> currentOrder.add(item));
@@ -236,6 +225,8 @@ public class DonutController extends OrderController implements Initializable {
         for(DonutType type : DonutType.values()) {
             donutTypeComboBox.getItems().add(type.getLabel());
         }
+        final String DONUT_TYPE_LABEL = "Donut Type";
+        donutTypeComboBox.setPromptText(DONUT_TYPE_LABEL);
     }
 
     /**
@@ -246,12 +237,13 @@ public class DonutController extends OrderController implements Initializable {
         for(String amount : AVAILABLE_QUANTITIES) {
             donutQuantityComboBox.getItems().add(amount);
         }
+        final String QUANTITY_LABEL = "Quantity";
         donutQuantityComboBox.setPromptText(QUANTITY_LABEL);
     }
 
     /**
      * displays appropriate donut flavors after donut type has been selected
-     * @param event
+     * @param event ActionEvent
      */
     @FXML
     private void handleSelectDonutType(ActionEvent event){

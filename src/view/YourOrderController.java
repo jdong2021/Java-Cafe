@@ -63,11 +63,11 @@ public class YourOrderController implements Initializable {
        for(MenuItem item : yourOrder.getOrder()) {
            if(item instanceof Donut) {
                // handle donut
-               DonutFlavor selectedFlavor = ((Donut) item).getFlavor();
-               if(order.containsKey(selectedFlavor)) {
-                   order.put(selectedFlavor, order.get(selectedFlavor) + 1);
+               String key = "Donut " + ((Donut) item).getFlavor();
+               if(order.containsKey(key)) {
+                   order.put(key, order.get(key) + 1);
                } else {
-                   order.put(selectedFlavor, 1);
+                   order.put(key, 1);
                }
            }
 
@@ -103,6 +103,7 @@ public class YourOrderController implements Initializable {
            final String ERROR_TITLE = "ERROR";
            final String ERROR_MESSAGE = "Cannot place empty order";
            displayAlert(ERROR_TITLE, ERROR_MESSAGE);
+           return;
        }
        StoreOrderController.storeOrders.add(yourOrder);
        OrderController.setNewOrder();
@@ -137,9 +138,6 @@ public class YourOrderController implements Initializable {
 
     @FXML
     private void removeItem(){
-       //iterate thru order to find menuitem to remvoe
-       // Order currentOrder = OrderController.getCurrentOrder();
-
         //if there is no selected item to remove
         if (myOrder.getSelectionModel().getSelectedItem() == null){
             final String ERROR_TITLE = "Error";
@@ -148,27 +146,65 @@ public class YourOrderController implements Initializable {
             return;
         }
 
-        // get index to split
-        // get last occurrence of space character to separate label and amounr
-        final int INDEX = myOrder.getSelectionModel().getSelectedItem().lastIndexOf(" ");
-        final DonutFlavor FLAVOR_TO_REMOVE = DonutFlavor.getFlavorByLabel(myOrder.getSelectionModel().getSelectedItem().substring(0, INDEX));
-        final int AMOUNT = Integer.parseInt(myOrder.getSelectionModel().getSelectedItem().substring(INDEX+1));
-        ArrayList<Donut> donutsToDelete = new ArrayList<>();
 
-        // for each item in current order
-        yourOrder.getOrder().forEach((item) -> {
-            Donut donut = (Donut) item;
-            // get donuts that match selected flavor to delete
-            if(donut.getFlavor() == FLAVOR_TO_REMOVE) {
-                donutsToDelete.add(donut);
-            }
-        });
+        final int ITEM_INDEX = myOrder.getSelectionModel().getSelectedItem().indexOf(" ");
+        String MENU_ITEM_TYPE = myOrder.getSelectionModel().getSelectedItem().substring(0, ITEM_INDEX);
 
-        // for each item to delete
-        for(int i = 0; i < AMOUNT; i++) {
-            // delete
-            yourOrder.remove(donutsToDelete.get(i));
+        final String DONUT = "Donut";
+        final String COFFEE = "Coffee";
+
+        if(MENU_ITEM_TYPE.equals(COFFEE)) {
+            // get the string Coffee alsjdlfgjas;kdfj;asdjf amount
+            final int TARGET_INDEX = myOrder.getSelectionModel().getSelectedItem().lastIndexOf(" ");
+            final String KEY = myOrder.getSelectionModel().getSelectedItem().substring(0, TARGET_INDEX);
+
+            ArrayList<Coffee> coffeeToDelete = new ArrayList<>();
+
+            yourOrder.getOrder().forEach(item -> {
+                if(item instanceof Coffee) {
+                    Coffee coffee = (Coffee) item;
+                    if(coffee.toString().equals(KEY)) {
+                        coffeeToDelete.add(coffee);
+                    }
+                }
+            });
+
+            // delete key
+            coffeeToDelete.forEach(coffee -> {
+                yourOrder.remove(coffee);
+            });
         }
+        else if(MENU_ITEM_TYPE.equals(DONUT)) {
+            // get index to split
+            // get last occurrence of space character to separate label and amounr
+            final int TARGET_INDEX = myOrder.getSelectionModel().getSelectedItem().lastIndexOf(" ");
+            final DonutFlavor FLAVOR_TO_REMOVE = DonutFlavor.getFlavorByLabel(myOrder.getSelectionModel().getSelectedItem().substring(ITEM_INDEX+1, TARGET_INDEX));
+            final int AMOUNT = Integer.parseInt(myOrder.getSelectionModel().getSelectedItem().substring(TARGET_INDEX+1));
+            ArrayList<Donut> donutsToDelete = new ArrayList<>();
+
+            // for each item in current order
+            yourOrder.getOrder().forEach((item) -> {
+                if(item instanceof Donut) {
+                    Donut donut = (Donut) item;
+                    // get donuts that match selected flavor to delete
+                    if(donut.getFlavor() == FLAVOR_TO_REMOVE) {
+                        donutsToDelete.add(donut);
+                    }
+                }
+            });
+
+            // for each item to delete
+            for(int i = 0; i < AMOUNT; i++) {
+                // delete
+                yourOrder.remove(donutsToDelete.get(i));
+            }
+        }
+
+        // this block is for donut orders
+
+
+
+
 
 //        loadOrderInfo();
 //        loadSubtotalInfo();
