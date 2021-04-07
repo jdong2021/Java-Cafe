@@ -21,10 +21,17 @@ import java.net.URL;
 import java.util.Arrays;
 import java.util.ResourceBundle;
 
+
+/**
+ * CoffeeController class handles inputs from the ordering Coffee GUI and defines all actions and helper methods relating
+ * events triggered by the GUI
+ */
 public class CoffeeController extends OrderController implements Initializable {
     private final String[] AVAILABLE_QUANTITIES = { "1","2","3","4" };
     private final String SIZE_LABEL = "Size";
     private final String QUANTITY_LABEL = "Quantity";
+    private final String ERROR_LOG = "ERROR";
+    private final String SIZE_QUANTITY_LOG = "Please select size and quantity";
 
     @FXML
     private ComboBox<String> coffeeSizeComboBox;
@@ -68,6 +75,9 @@ public class CoffeeController extends OrderController implements Initializable {
         subTotalField.setText((RoundTo2Decimals(subtotal)));
     }
 
+    /**
+     * inserts valid coffee sizes into coffee sizes combobox
+     */
     @FXML
     private void loadCoffeeSize(){
         for(CoffeeSize size : CoffeeSize.values()) {
@@ -76,6 +86,9 @@ public class CoffeeController extends OrderController implements Initializable {
         coffeeSizeComboBox.setPromptText(SIZE_LABEL);
     }
 
+    /**
+     * inserts valid coffee quantities into coffee quantity combobox
+     */
     @FXML
     private void loadCoffeeQuantity(){
         for(String amount : AVAILABLE_QUANTITIES) {
@@ -84,12 +97,20 @@ public class CoffeeController extends OrderController implements Initializable {
         coffeeQuantityComboBox.setPromptText(QUANTITY_LABEL);
     }
 
+    /**
+     * dictates actions right after Coffee GUI is created
+     * @param url url
+     * @param resourceBundle resourceBundle
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         loadCoffeeSize();
         loadCoffeeQuantity();
     }
 
+    /**
+     * takes in info on how many coffees ordered and keeps track of current amount in order
+     */
     @FXML
     private void onQuantitySelected() {
         // get amount selected and current amount in order
@@ -118,6 +139,10 @@ public class CoffeeController extends OrderController implements Initializable {
         adjustSubTotal();
     }
 
+    /**
+     * handles user input regarding add ins for coffee
+     * @param e ActionEvent
+     */
     @FXML
     private void onAddInSelected(ActionEvent e) {
         // adjust addIns
@@ -126,6 +151,10 @@ public class CoffeeController extends OrderController implements Initializable {
         adjustSubTotal();
     }
 
+    /**
+     * handles user input regarding size of Coffee
+     * @param e ActionEvent
+     */
     @FXML
     private void onSizeSelected(ActionEvent e) {
         // adjust sizes
@@ -134,26 +163,18 @@ public class CoffeeController extends OrderController implements Initializable {
         adjustSubTotal();
     }
 
+    /**
+     *loads yourOrder GUI after placing adding coffee to your order
+     * @throws IOException
+     */
     @FXML
     private void loadyourOrder() throws IOException {
+        if(coffeeQuantityComboBox.getSelectionModel().getSelectedItem() == null ||
+                coffeeSizeComboBox.getSelectionModel().getSelectedItem() == null){
 
-        // if empty
-//        if(donutlistView.getSelectionModel().isEmpty()) {
-//            displayAlert(ERROR, EMPTY_LIST);
-//            return;
-//        }
-//
-//        // if no donut was selected
-//        if(donutlistView.getSelectionModel().getSelectedItem() == null) {
-//            displayAlert(ERROR, MISSING_SELECTION);
-//            return;
-//        }
-//
-//        // if no quantity was selected
-//        if(donutQuantityComboBox.getSelectionModel().getSelectedItem() == null) {
-//            displayAlert(ERROR, MISSING_QUANITITY);
-//            return;
-//        }
+            YourOrderController.displayAlert(ERROR_LOG, SIZE_QUANTITY_LOG);
+            return;
+        }
 
         // add temp order to current order
         tempOrder.getOrder().forEach(item -> {
@@ -170,6 +191,11 @@ public class CoffeeController extends OrderController implements Initializable {
         stage.close();
     }
 
+    /**
+     * computes amount to add to subtotal
+     * @param curAmount integer current amount
+     * @param selectedAmount integer selected amount
+     */
     private void addToOrder(int curAmount, int selectedAmount) {
         // get amount to add
         final int AMOUNT_TO_ADD = selectedAmount - curAmount;
@@ -179,6 +205,11 @@ public class CoffeeController extends OrderController implements Initializable {
         }
     }
 
+    /**
+     * removes a coffee object from order
+     * @param curAmount integer current amount
+     * @param selectedAmount integer selected amount
+     */
     private void removeFromOrder(int curAmount, int selectedAMount) {
         // get array of objects to remove
         Object[] objectsToDelete = tempOrder.getOrder().toArray();
@@ -189,6 +220,9 @@ public class CoffeeController extends OrderController implements Initializable {
         }
     }
 
+    /**
+     * deals with addIns entered by GUI
+     */
     private void handleAddIn() {
         // only do when Coffee object exists
         if(!tempOrder.isEmpty()) {
@@ -230,6 +264,10 @@ public class CoffeeController extends OrderController implements Initializable {
         }
     }
 
+    /**
+     *deals with adding in multiple addins
+     * @param addIn CoffeeAddIn to add in
+     */
     private void addMany(CoffeeAddIn addIn) {
         tempOrder.getOrder().forEach((item) -> {
             Coffee coffee = (Coffee) item;
@@ -237,6 +275,10 @@ public class CoffeeController extends OrderController implements Initializable {
         });
     }
 
+    /**
+     * deals with removing multiple addins
+     * @param addIn CoffeeAddIn to remove
+     */
     private void removeMany(CoffeeAddIn addIn) {
         tempOrder.getOrder().forEach((item) -> {
             Coffee coffee = (Coffee) item;
@@ -244,6 +286,9 @@ public class CoffeeController extends OrderController implements Initializable {
         });
     }
 
+    /**
+     * handles user info regarding size of coffees
+     */
     private void handleSize() {
         // only do when Coffee object exists
         if(!tempOrder.isEmpty()) {

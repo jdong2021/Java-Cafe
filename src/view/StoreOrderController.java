@@ -33,6 +33,10 @@ import java.util.UUID;
  */
 public class StoreOrderController implements Initializable {
     static final StoreOrders storeOrders = new StoreOrders();
+    private static final String ERROR_LOG = "Error";
+    private static final String SELECT_FILE_LOG = "Please select valid file to export";
+    private static final String EMPTY_STOREORDERS_LOG = "No Store Orders to export";
+    private static final String SELECTION_ERROR_LOG = "No Order Selected ";
 
     private UUID currentOrderUUID;
 
@@ -51,8 +55,16 @@ public class StoreOrderController implements Initializable {
     @FXML
     private Button exportBtn;
 
+    /**
+     * defautlt constructor for StoreOrderController class
+     */
     public StoreOrderController() { }
 
+    /**
+     * dictates actions right after store Order GUI is created
+     * @param url url
+     * @param resourceBundle resourcebundle
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         //populate order numbers
@@ -60,6 +72,9 @@ public class StoreOrderController implements Initializable {
         storeOrderTotal.setEditable(false);
     }
 
+    /**
+     * Fills combobox with appropriate Order number values 
+     */
     @FXML
     private void loadOrdernumbers() {
         for (Order o : storeOrders.getStoreOrders()) {
@@ -67,6 +82,9 @@ public class StoreOrderController implements Initializable {
         }
     }
 
+    /**
+     * Fills listview with appropriate contents of each order selected 
+     */
     @FXML
     private void displayOrderContents() {
         if (orderNumbercombobox.getSelectionModel().getSelectedItem() == null){
@@ -121,6 +139,9 @@ public class StoreOrderController implements Initializable {
 
     }
 
+    /**
+     * updates textfield to show total of each order selected in Store Order GUI
+     */
     private void updateTotal(){
         //update total textfield
         currentOrderUUID = UUID.fromString(orderNumbercombobox.getSelectionModel().getSelectedItem());
@@ -135,12 +156,15 @@ public class StoreOrderController implements Initializable {
         }
     }
 
+    /**
+     * handles events when a user requests to cancel an Order from StoreOrders
+     */
     @FXML
     private void cancelOrder(){
 
         // if no order is selected then we cannot cancel!
         if (orderNumbercombobox.getSelectionModel().getSelectedItem() == null){
-            YourOrderController.displayAlert("Error", "No Order Selected ");
+            YourOrderController.displayAlert(ERROR_LOG, SELECTION_ERROR_LOG);
             return;
         }
 
@@ -163,17 +187,16 @@ public class StoreOrderController implements Initializable {
             orderNumbercombobox.getItems().removeAll(orderNumbercombobox.getSelectionModel().getSelectedItem());
     }
 
+    /**
+     * handles events when a user requests to export all orders from Store Orders
+     */
     @FXML
     private void handleExport() {
 
-
-        if (storeOrders.getOrders().isEmpty()){
-            YourOrderController.displayAlert("Error", "No Store Orders to export");
+        if (storeOrders.getStoreOrders().isEmpty()) {
+            YourOrderController.displayAlert(ERROR_LOG, EMPTY_STOREORDERS_LOG);
             return;
         }
-
-
-
 
 
         FileChooser chooser = new FileChooser();
@@ -186,7 +209,7 @@ public class StoreOrderController implements Initializable {
             //write code to write to the file.
             if (targetFile == null) {
                 //display alert that they must choose file
-                YourOrderController.displayAlert("Error exporting", "Please select valid file to export");
+                YourOrderController.displayAlert(ERROR_LOG, SELECT_FILE_LOG);
                 return;
             }
 
@@ -194,99 +217,56 @@ public class StoreOrderController implements Initializable {
             //we wont allow user to export if store orders is blank
 
 
-            String output = "";
-            for (Order o : storeOrders.getOrders()) {
+            StringBuilder str = new StringBuilder();
+            for (Order o : storeOrders.getStoreOrders()) {
 
 
-                double currentOrderTotal = o.getOrderFinalTotal();
-
-                // initialize a new map
                 HashMap<Object, Integer> order = new HashMap<>();
-
-                // reduce items in order to flavor selection and amounts
+                str.append("Order num: ");
+                str.append(o.getOrderNumber().toString());
+                str.append(" ");
                 for (MenuItem item : o.getOrder()) {
-                    output = output + "Order Number: " + o.getOrderNumber().toString()+ " ";
-                    if(item instanceof Donut) {
+
+                    if (item instanceof Donut) {
+                        // handle donut
                         DonutFlavor selectedFlavor = ((Donut) item).getFlavor();
                         if (order.containsKey(selectedFlavor)) {
                             order.put(selectedFlavor, order.get(selectedFlavor) + 1);
                         } else {
                             order.put(selectedFlavor, 1);
                         }
-
-
-                        // output = output + "Order Number: " + o.getOrderNumber().toString()+ " ";
-
-
-
-
-
-                        Iterator it = order.entrySet().iterator();
-                        while(it.hasNext()){
-                            Map.Entry pair = (Map.Entry) it.next();
-                            output = output  +(pair.getKey().toString() + " " + pair.getValue().toString() + " ");
-                            it.remove();
-                        }
-                        //output = output + " " +"Total:"+ YourOrderController.RoundTo2Decimals(Double.parseDouble(o.getTotal())) + "\n";
-
                     }
-
-
-                    else if(item instanceof Coffee){
+                    // handle coffee
+                    else if (item instanceof Coffee) {
                         String key = item.toString();
-                        if(order.containsKey(key)) {
+                        if (order.containsKey(key)) {
                             order.put(key, order.get(key) + 1);
                         } else {
                             order.put(key, 1);
                         }
-                        //output = output + "Order Number: " + o.getOrderNumber().toString()+ " ";
-
-                        Iterator it = order.entrySet().iterator();
-                        while(it.hasNext()){
-                            Map.Entry pair = (Map.Entry) it.next();
-                            output = output  +(pair.getKey().toString() + " " + pair.getValue().toString() + " ");
-                            it.remove();
-                        }
-                        // output = output + " " +"Total:"+ YourOrderController.RoundTo2Decimals(Double.parseDouble(o.getTotal())) + "\n";
-
                     }
-                    output = output + " " +"Total:"+ YourOrderController.RoundTo2Decimals(Double.parseDouble(o.getTotal())) + "\n";
+
                 }
+                str.append("Order price: ");
+                str.append(YourOrderController.RoundTo2Decimals(Double.parseDouble(o.getTotal())));
+                //myOrder.getItems().clear();
+
+                order.forEach((k, v) -> {
+                    str.append(" ");
+                    str.append(k + " " + v);
 
 
-
+                });
+                str.append("\n");
             }
 
 
-            writer.write(output);
+            writer.write(str.toString());
             writer.close();
-
-        } catch (IOException ioException) {
-            ioException.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
 
-//    private static void displayAlert(String title, String message){
-//        Stage alertWindow = new Stage();
-//        alertWindow.setTitle(title);
-//        alertWindow.setMinWidth(300);
-//        Label label = new Label();
-//        label.setText(message);
-//        Button closeButton = new Button("Close Window");
-//        closeButton.setOnAction(e -> alertWindow.close());
-//
-//        VBox layout = new VBox(10);
-//        layout.getChildren().addAll(label,closeButton);
-//        layout.setAlignment(Pos.CENTER);
-//
-//        Scene scene = new Scene(layout);
-//        alertWindow.setScene(scene);
-//        alertWindow.showAndWait();
-//
-//    }
-//    public String RoundTo2Decimals(double val) {
-//        DecimalFormat df2 = new DecimalFormat("##0.00");
-//        return (df2.format(val));
-//    }
 }

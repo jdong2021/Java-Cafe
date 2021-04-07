@@ -3,6 +3,9 @@ package view;
 import application.Order;
 import java.text.DecimalFormat;
 
+/**
+ * OrderController is extended by DonutController and Coffee Controller and allows commmunication between the two controller classes
+ */
 public class OrderController {
     protected static Order currentOrder = new Order();
     protected static Double subtotal;
@@ -10,6 +13,9 @@ public class OrderController {
 
     OrderController() { }
 
+    /**
+     * initializes
+     */
     public static void setNewOrder() {
         currentOrder = new Order();
     }

@@ -21,6 +21,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 
+/**
+ *YourOrderController class handles inputs from the your order GUI and defines all actions and helper methods relating to events triggered by the GUI
+ *
+ * @author Hugo De Moraes, Jonathan Dong
+ */
 public class YourOrderController implements Initializable {
     private static final double SALES_TAX_PERCENT = 0.06625;
     Order yourOrder;
@@ -53,6 +58,9 @@ public class YourOrderController implements Initializable {
         });
     }
 
+    /**
+     * populates the listview with appropriate order details
+     */
    @FXML
    public void loadOrderInfo(){
        //Order currentOrder = OrderController.getCurrentOrder();
@@ -89,11 +97,18 @@ public class YourOrderController implements Initializable {
        });
    }
 
+    /**
+     * populates the subtotal textfield with appropriate subtotal amount
+     */
    @FXML
    public void loadSubtotalInfo(){
        yourOrderSubtotal.setText(RoundTo2Decimals(yourOrder.getOrderSubtotal()));
    }
 
+    /**
+     * handles action when user wants to add their order to the Store Orders
+     * @throws IOException exception to be thrown if fxml page has error
+     */
    @FXML
    public void loadStoreOrders() throws IOException {
        // yourOrder.add(OrderController.getCurrentOrder());
@@ -119,11 +134,17 @@ public class YourOrderController implements Initializable {
        stage.close();
    }
 
+    /**
+     * calculates sales tax for order and updates textfield
+     */
    @FXML
    private void calculatesalestax(){
         salestax.setText(RoundTo2Decimals(yourOrder.getOrderSubtotal() * SALES_TAX_PERCENT));
    }
 
+    /**
+     * calculates order total and updates textfield
+     */
    @FXML
    private void calculatetotal(){
         double subtotalval = Double.parseDouble(yourOrderSubtotal.getText());
@@ -131,11 +152,19 @@ public class YourOrderController implements Initializable {
         totalTextField.setText((RoundTo2Decimals(subtotalval+salestaxval)));
    }
 
+    /**
+     * returns a formatted String to 2 decimal places given a double
+     * @param val double to be formatted
+     * @return string representation of double to 2 decimal places
+     */
     public static String RoundTo2Decimals(double val) {
         DecimalFormat df2 = new DecimalFormat("##0.00");
         return (df2.format(val));
     }
 
+    /**
+     * removes a menuitem from your order
+     */
     @FXML
     private void removeItem(){
         //if there is no selected item to remove
@@ -206,12 +235,14 @@ public class YourOrderController implements Initializable {
 
 
 
-//        loadOrderInfo();
-//        loadSubtotalInfo();
-//        calculatesalestax();
-//        calculatetotal();
+
    }
 
+    /**
+     * displays an alert message with a title and messages
+     * @param title title of alert box
+     * @param message message of alert box
+     */
     public static void displayAlert(String title, String message){
         Stage alertWindow = new Stage();
         alertWindow.setTitle(title);
@@ -231,6 +262,12 @@ public class YourOrderController implements Initializable {
         alertWindow.showAndWait();
 
     }
+
+    /**
+     * dictates actions right after your order GUI is created
+     * @param url url
+     * @param resourceBundle resourcebundle
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
        if(yourOrder != null) {
