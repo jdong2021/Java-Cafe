@@ -10,7 +10,7 @@ import javafx.collections.ObservableList;
  * @author Hugo De Moraes, Jonathan Dong
  */
 public class StoreOrders implements Customizable {
-    private ObservableList<Order> storeOrders = FXCollections.observableArrayList();
+    private final ObservableList<Order> storeOrders = FXCollections.observableArrayList();
 
     /**
      * Default Constructor for StoreOrders

@@ -1,9 +1,6 @@
 package view;
 
-import application.MenuItem;
 import application.Order;
-import application.StoreOrders;
-
 import java.text.DecimalFormat;
 
 public class OrderController {
@@ -19,10 +16,6 @@ public class OrderController {
 
     public static Order getCurrentOrder(){
         return currentOrder;
-    }
-
-    public static Double getCurrentSubtotal(){
-        return subtotal;
     }
 
     protected String RoundTo2Decimals(double val) {

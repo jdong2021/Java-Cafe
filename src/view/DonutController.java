@@ -1,22 +1,22 @@
 package view;
 import application.Donut;
-import application.*;
 import application.MenuItem;
+import application.DonutFlavor;
+import application.DonutType;
+import application.Order;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
-
-import javafx.scene.layout.VBox;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-
 import java.io.IOException;
 import java.net.URL;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.ResourceBundle;
@@ -32,9 +32,11 @@ public class DonutController extends OrderController implements Initializable {
     private final String MISSING_QUANITITY = "Please select a quantity";
     private final String ERROR = "Error";
     private final String EMPTY_LIST = "List is empty";
+    private final String QUANTITY_LABEL = "QUANTITY";
 
     @FXML
     private ListView<String> donutPickedlistView;
+
     @FXML
     private ListView<String> donutlistView;
 
@@ -244,7 +246,7 @@ public class DonutController extends OrderController implements Initializable {
         for(String amount : AVAILABLE_QUANTITIES) {
             donutQuantityComboBox.getItems().add(amount);
         }
-        donutQuantityComboBox.setPromptText("Quantity");
+        donutQuantityComboBox.setPromptText(QUANTITY_LABEL);
     }
 
     /**

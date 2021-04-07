@@ -100,7 +100,9 @@ public class YourOrderController implements Initializable {
        // OrderController.getCurrentOrder().setTotal(totalTextField.getText());
 
        if(totalTextField.getText().equals("0.00") || totalTextField.getText().equals("")){
-           displayAlert("Error", "Cannot place empty order");
+           final String ERROR_TITLE = "ERROR";
+           final String ERROR_MESSAGE = "Cannot place empty order";
+           displayAlert(ERROR_TITLE, ERROR_MESSAGE);
        }
        StoreOrderController.storeOrders.add(yourOrder);
        OrderController.setNewOrder();
@@ -140,7 +142,9 @@ public class YourOrderController implements Initializable {
 
         //if there is no selected item to remove
         if (myOrder.getSelectionModel().getSelectedItem() == null){
-            displayAlert("Error", "No item Selected ");
+            final String ERROR_TITLE = "Error";
+            final String ERROR_MESSAGE = "No item Selected";
+            displayAlert(ERROR_TITLE, ERROR_MESSAGE);
             return;
         }
 
@@ -178,7 +182,8 @@ public class YourOrderController implements Initializable {
         alertWindow.setMinWidth(300);
         Label label = new Label();
         label.setText(message);
-        Button closeButton = new Button("Close Window");
+        final String BUTTON_LABEL = "Close Window";
+        Button closeButton = new Button(BUTTON_LABEL);
         closeButton.setOnAction(e -> alertWindow.close());
 
         VBox layout = new VBox(10);

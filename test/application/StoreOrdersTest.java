@@ -10,15 +10,11 @@ public class StoreOrdersTest {
     public void testObservable() {
         StoreOrders testStoreOrders = new StoreOrders();
         Order testOrder1 = new Order();
-        System.out.println("1");
         Assertions.assertTrue(testStoreOrders.add(testOrder1));
         Order testOrder2 = new Order();
-        System.out.println("2");
         Assertions.assertTrue(testStoreOrders.add(testOrder2));
         Order testOrder3 = new Order();
-        System.out.println("3");
         Assertions.assertTrue(testStoreOrders.add(testOrder3));
-        System.out.println("4");
         Assertions.assertTrue(testStoreOrders.remove(testOrder3));
     }
 

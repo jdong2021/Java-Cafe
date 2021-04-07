@@ -1,11 +1,18 @@
 package view;
 
-import application.*;
+import application.Donut;
 import application.MenuItem;
+import application.Order;
+import application.StoreOrders;
+import application.DonutFlavor;
+import application.Coffee;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -13,8 +20,17 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
-import java.util.*;
+import java.util.HashMap;
+import java.util.ResourceBundle;
+import java.util.UUID;
 
+/**
+ * StoreOrderController handles inputs from the store orders GUI and
+ * defines all actions and helper methods relating to events triggered by the GUI
+ * such as exporting store orders and removing an order from store orders
+ *
+ * @author Hugo De Moraes, Jonathan Dong
+ */
 public class StoreOrderController implements Initializable {
     static final StoreOrders storeOrders = new StoreOrders();
 
@@ -134,35 +150,17 @@ public class StoreOrderController implements Initializable {
             if (o.getOrderNumber().equals(currentOrderUUID)) {
 
                 Platform.runLater(()-> {
-               // System.out.println("removing order");
                         storeOrders.remove(o);
 
                             storeOrders.remove(o);
                             storeOrderTotal.setText("");
                             storeOrderListView.getItems().clear();
                        });
-
-
-
-
             }
         }
 
 
-        for (Order o : storeOrders.getStoreOrders()) {
-            System.out.println(o.getOrderNumber().toString());
-        }
-
-
-
             orderNumbercombobox.getItems().removeAll(orderNumbercombobox.getSelectionModel().getSelectedItem());
-
-
-
-
-
-
-
     }
 
     @FXML
