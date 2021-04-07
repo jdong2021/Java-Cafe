@@ -91,6 +91,9 @@ public class CoffeeController extends OrderController implements Initializable {
         final int SELECTED_AMOUNT = Integer.parseInt(coffeeQuantityComboBox.getSelectionModel().getSelectedItem());
         final int CUR_AMOUNT = tempOrder.getOrder().size();
 
+        System.out.println(SELECTED_AMOUNT);
+        System.out.println(CUR_AMOUNT);
+
         // case: do nothing
         if(SELECTED_AMOUNT == CUR_AMOUNT) {
             return;
@@ -131,8 +134,8 @@ public class CoffeeController extends OrderController implements Initializable {
 
     @FXML
     private void loadyourOrder() throws IOException {
-//
-//        // if empty
+
+        // if empty
 //        if(donutlistView.getSelectionModel().isEmpty()) {
 //            displayAlert(ERROR, EMPTY_LIST);
 //            return;
@@ -151,7 +154,14 @@ public class CoffeeController extends OrderController implements Initializable {
 //        }
 
         // add temp order to current order
-        tempOrder.getOrder().forEach(item -> currentOrder.add(item));
+        tempOrder.getOrder().forEach(item -> {
+            System.out.println("Adding");
+            currentOrder.add(item);
+        });
+
+        currentOrder.getOrder().forEach(item -> {
+            System.out.println("Added");
+        });
 
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../view/yourorder.fxml"));
         Parent root1 = (Parent) fxmlLoader.load();
@@ -167,9 +177,12 @@ public class CoffeeController extends OrderController implements Initializable {
         // get amount to add
         final int AMOUNT_TO_ADD = selectedAmount - curAmount;
         // for amount, add
+        System.out.println("Adding " + AMOUNT_TO_ADD);
         for(int i = 0; i < AMOUNT_TO_ADD; i++) {
+            System.out.println("Adding to temp order");
             tempOrder.add(new Coffee());
         }
+        tempOrder.getOrder().forEach(item -> System.out.println("Added to temp order"));
     }
 
     private void removeFromOrder(int curAmount, int selectedAMount) {

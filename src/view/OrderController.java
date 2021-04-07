@@ -2,6 +2,8 @@ package view;
 
 import application.MenuItem;
 import application.Order;
+import application.StoreOrders;
+
 import java.text.DecimalFormat;
 
 public class OrderController {
@@ -11,8 +13,8 @@ public class OrderController {
 
     OrderController() { }
 
-    protected void addListener(javafx.collections.ListChangeListener<MenuItem> listener) {
-        this.currentOrder.addListener(listener);
+    public static void setNewOrder() {
+        currentOrder = new Order();
     }
 
     public static Order getCurrentOrder(){
