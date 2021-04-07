@@ -5,15 +5,27 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+/**
+ * Coffee class is a child class of MenuItem and represents a Coffee Object with additional instance variables
+ * and methods unique to Coffee, implements Customizable interface
+ *
+ * @author Hugo De Moraes, Jonathan Dong
+ */
 public class Coffee extends MenuItem implements Customizable {
     private final Set<CoffeeAddIn> selectedAddIns = new HashSet<>();
-
     private CoffeeSize selectedSize;
 
+    /**
+     * Default Constructor for Coffee
+     */
     public Coffee() {
         super();
     }
 
+    /**
+     * Overridden itemPrice method, calculates the price for a Coffee based on selected size and add-ins
+     * @return a double representing the price
+     */
     @Override
     public double itemPrice() {
         double itemPrice = 0;
@@ -31,6 +43,12 @@ public class Coffee extends MenuItem implements Customizable {
         return itemPrice;
     }
 
+    /**
+     * Customizable interface method, given an object of type CoffeeAddIn
+     * adds the object to this.selectedAddIns
+     * @param obj Object
+     * @return true if added successfully, false otherwise
+     */
     public boolean add(Object obj) {
         // handle addIn
         if(obj instanceof CoffeeAddIn) {
@@ -48,6 +66,12 @@ public class Coffee extends MenuItem implements Customizable {
         return false;
     }
 
+    /**
+     * Customizable interface method, given an object of type CoffeeAddIn,
+     * removes the object from this.selectedAddIns
+     * @param obj Object
+     * @return true if removed successfully, false otherwise
+     */
     public boolean remove(Object obj) {
         if(obj instanceof CoffeeAddIn) {
             // cast to addIns enum
@@ -64,41 +88,35 @@ public class Coffee extends MenuItem implements Customizable {
         return false;
     }
 
-    public boolean setSize(Object obj) {
-        // handle size
-        if(obj instanceof CoffeeSize) {
-            // cast to sizes enum
-            CoffeeSize selectedSize = (CoffeeSize) obj;
-            // if null
-            if(this.selectedSize == null) {
-                // set new selected size
-                this.selectedSize = selectedSize;
-                // add newly selected size to menuItem price
-                super.addToItemPrice(selectedSize.getPrice());
-            }
-            // if not already selected
-            else if( this.selectedSize != selectedSize) {
-                // remove previous size from menuItem price
-                super.addToItemPrice(-this.selectedSize.getPrice());
-                // set new selected size
-                this.selectedSize = selectedSize;
-                // add newly selected size to menuItem price
-                super.addToItemPrice(selectedSize.getPrice());
-            }
-            return true;
+    /**
+     * Given an instance of CoffeeSize,
+     * sets this.selectedSize to be the object
+     * @param selectedSize CoffeeSize
+     */
+    public void setSize(CoffeeSize selectedSize) {
+        // if null
+        if(this.selectedSize == null) {
+            // set new selected size
+            this.selectedSize = selectedSize;
+            // add newly selected size to menuItem price
+            super.addToItemPrice(selectedSize.getPrice());
         }
-        return false;
+        // if not already selected
+        else if( this.selectedSize != selectedSize) {
+            // remove previous size from menuItem price
+            super.addToItemPrice(-this.selectedSize.getPrice());
+            // set new selected size
+            this.selectedSize = selectedSize;
+            // add newly selected size to menuItem price
+            super.addToItemPrice(selectedSize.getPrice());
+        }
     }
 
-//    public CoffeeSize getSelectedSize() {
-//        return selectedSize;
-//    }
-//
-//    public Set<CoffeeAddIn> getSelectedAddIns() {
-//        return selectedAddIns;
-//    }
 
-
+    /**
+     * Overridden toString method
+     * @return formatted string representing Coffee object and it's data members
+     */
     @Override
     public String toString() {
         return "Coffee - "

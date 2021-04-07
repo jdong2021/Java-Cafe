@@ -4,6 +4,11 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import java.util.UUID;
 
+/**
+ * Order class is a container class that is designed to hold MenuItem objects and any subclasses of MenuItem.
+ *
+ * 
+ */
 public class Order implements Customizable {
     private final UUID orderNumber;
     private final ObservableList<MenuItem> currentOrder = FXCollections.observableArrayList();

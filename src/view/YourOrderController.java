@@ -70,6 +70,7 @@ public class YourOrderController implements Initializable {
                    order.put(selectedFlavor, 1);
                }
            }
+
            // handle coffee
            else if(item instanceof Coffee){
                String key = item.toString();

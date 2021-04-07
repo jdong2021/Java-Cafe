@@ -5,10 +5,7 @@ import application.MenuItem;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.geometry.Pos;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -16,7 +13,6 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
-import java.text.DecimalFormat;
 import java.util.*;
 
 public class StoreOrderController implements Initializable {
@@ -46,7 +42,6 @@ public class StoreOrderController implements Initializable {
         //populate order numbers
         loadOrdernumbers();
         storeOrderTotal.setEditable(false);
-
     }
 
     @FXML
@@ -174,10 +169,10 @@ public class StoreOrderController implements Initializable {
     private void handleExport() {
 
 
-            if (storeOrders.getOrders().isEmpty()){
-                YourOrderController.displayAlert("Error", "No Store Orders to export");
-                return;
-            }
+        if (storeOrders.getOrders().isEmpty()){
+            YourOrderController.displayAlert("Error", "No Store Orders to export");
+            return;
+        }
 
 
 
@@ -193,8 +188,8 @@ public class StoreOrderController implements Initializable {
             //write code to write to the file.
             if (targetFile == null) {
                 //display alert that they must choose file
-               YourOrderController.displayAlert("Error exporting", "Please select valid file to export");
-               return;
+                YourOrderController.displayAlert("Error exporting", "Please select valid file to export");
+                return;
             }
 
             FileWriter writer = new FileWriter(targetFile);
@@ -205,33 +200,60 @@ public class StoreOrderController implements Initializable {
             for (Order o : storeOrders.getOrders()) {
 
 
-                   double currentOrderTotal = o.getOrderFinalTotal();
+                double currentOrderTotal = o.getOrderFinalTotal();
 
-                    // initialize a new map
-                    HashMap<DonutFlavor, Integer> order = new HashMap<>();
+                // initialize a new map
+                HashMap<Object, Integer> order = new HashMap<>();
 
-                    // reduce items in order to flavor selection and amounts
-                    for (MenuItem item : o.getOrder()) {
+                // reduce items in order to flavor selection and amounts
+                for (MenuItem item : o.getOrder()) {
+                    output = output + "Order Number: " + o.getOrderNumber().toString()+ " ";
+                    if(item instanceof Donut) {
                         DonutFlavor selectedFlavor = ((Donut) item).getFlavor();
                         if (order.containsKey(selectedFlavor)) {
                             order.put(selectedFlavor, order.get(selectedFlavor) + 1);
                         } else {
                             order.put(selectedFlavor, 1);
                         }
+
+
+                        // output = output + "Order Number: " + o.getOrderNumber().toString()+ " ";
+
+
+
+
+
+                        Iterator it = order.entrySet().iterator();
+                        while(it.hasNext()){
+                            Map.Entry pair = (Map.Entry) it.next();
+                            output = output  +(pair.getKey().toString() + " " + pair.getValue().toString() + " ");
+                            it.remove();
+                        }
+                        //output = output + " " +"Total:"+ YourOrderController.RoundTo2Decimals(Double.parseDouble(o.getTotal())) + "\n";
+
                     }
-                        output = output + "Order Number: " + o.getOrderNumber().toString()+ " ";
 
 
+                    else if(item instanceof Coffee){
+                        String key = item.toString();
+                        if(order.containsKey(key)) {
+                            order.put(key, order.get(key) + 1);
+                        } else {
+                            order.put(key, 1);
+                        }
+                        //output = output + "Order Number: " + o.getOrderNumber().toString()+ " ";
 
+                        Iterator it = order.entrySet().iterator();
+                        while(it.hasNext()){
+                            Map.Entry pair = (Map.Entry) it.next();
+                            output = output  +(pair.getKey().toString() + " " + pair.getValue().toString() + " ");
+                            it.remove();
+                        }
+                        // output = output + " " +"Total:"+ YourOrderController.RoundTo2Decimals(Double.parseDouble(o.getTotal())) + "\n";
 
-
-                    Iterator it = order.entrySet().iterator();
-                    while(it.hasNext()){
-                        Map.Entry pair = (Map.Entry) it.next();
-                        output = output  +(pair.getKey().toString() + " " + pair.getValue().toString() + " ");
-                        it.remove();
                     }
                     output = output + " " +"Total:"+ YourOrderController.RoundTo2Decimals(Double.parseDouble(o.getTotal())) + "\n";
+                }
 
 
 

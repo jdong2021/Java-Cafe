@@ -9,23 +9,19 @@ public class CoffeeTest {
     public void setSize() {
         Coffee testCoffee = new Coffee();
         // Test Case 1: set short size and check price
-        Assertions.assertTrue(testCoffee.setSize(CoffeeSize.SHORT));
+        testCoffee.setSize(CoffeeSize.SHORT);
         Assertions.assertEquals(CoffeeSize.SHORT.getPrice(), testCoffee.itemPrice());
 
         // Test Case 2: set tall size
-        Assertions.assertTrue(testCoffee.setSize(CoffeeSize.TALL));
+        testCoffee.setSize(CoffeeSize.TALL);
         Assertions.assertEquals(testCoffee.itemPrice(), CoffeeSize.TALL.getPrice());
 
         // Test Case 3: set grande size
-        Assertions.assertTrue(testCoffee.setSize(CoffeeSize.GRANDE));
+        testCoffee.setSize(CoffeeSize.GRANDE);
         Assertions.assertEquals(testCoffee.itemPrice(), CoffeeSize.GRANDE.getPrice());
 
         // Test Case 4: set venti size
-        Assertions.assertTrue(testCoffee.setSize(CoffeeSize.VENTI));
-        Assertions.assertEquals(testCoffee.itemPrice(), CoffeeSize.VENTI.getPrice());
-
-        // Test Case 5: set invalid size, check price remains the same
-        Assertions.assertFalse(testCoffee.setSize(new Object()));
+        testCoffee.setSize(CoffeeSize.VENTI);
         Assertions.assertEquals(testCoffee.itemPrice(), CoffeeSize.VENTI.getPrice());
     }
 
