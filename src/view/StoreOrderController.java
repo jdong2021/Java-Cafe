@@ -128,7 +128,6 @@ public class StoreOrderController implements Initializable {
         currentOrderUUID = UUID.fromString(orderNumbercombobox.getSelectionModel().getSelectedItem());
 
         for (Order o : storeOrders.getOrders()) {
-        for (application.Order o : thisStoresOrders.getOrders()) {
             if (o.getOrderNumber().equals(currentOrderUUID)) {
 
                 Platform.runLater(()-> {
@@ -164,7 +163,7 @@ public class StoreOrderController implements Initializable {
     }
 
     @FXML
-    private void handleExport(){
+    private void handleExport() {
 
 
             if (storeOrders.getOrders().isEmpty()){

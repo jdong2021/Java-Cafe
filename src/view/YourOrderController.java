@@ -128,10 +128,9 @@ public class YourOrderController implements Initializable {
 
    @FXML
    private void calculatetotal(){
-       double subtotalval = Double.parseDouble(yourOrderSubtotal.getText());
-       double salestaxval = Double.parseDouble(salestax.getText());
-       totalTextField.setText((RoundTo2Decimals(subtotalval+salestaxval)));
-
+       // double subtotalval = Double.parseDouble(yourOrderSubtotal.getText());
+       // double salestaxval = Double.parseDouble(salestax.getText());
+       // totalTextField.setText((RoundTo2Decimals(subtotalval+salestaxval)));
    }
 
     public static String RoundTo2Decimals(double val) {
