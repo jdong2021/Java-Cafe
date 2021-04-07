@@ -90,42 +90,24 @@ public class Coffee extends MenuItem implements Customizable {
         return false;
     }
 
-    public CoffeeSize getSelectedSize() {
-        return selectedSize;
-    }
+//    public CoffeeSize getSelectedSize() {
+//        return selectedSize;
+//    }
+//
+//    public Set<CoffeeAddIn> getSelectedAddIns() {
+//        return selectedAddIns;
+//    }
 
-    public Set<CoffeeAddIn> getSelectedAddIns() {
-        return selectedAddIns;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (o == this) {
-            return true;
-        }
-
-        if (!(o instanceof Coffee)) {
-            return false;
-        }
-
-        // typecast o to Employee so that we can compare data members
-        Coffee c = (Coffee) o;
-
-        if(selectedSize != c.getSelectedSize()) {
-            return false;
-        }
-
-        return selectedAddIns.equals(c.getSelectedAddIns());
-    }
 
     @Override
     public String toString() {
         return "Coffee - "
                 + selectedSize.toString()
-                + " - "
+                + " - [ "
                 + selectedAddIns.stream()
                 .map(Object::toString)
-                .collect(Collectors.joining(", "));
+                .collect(Collectors.joining(", "))
+                + " ]";
 
     }
 }

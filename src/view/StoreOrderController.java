@@ -45,15 +45,12 @@ public class StoreOrderController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         //populate order numbers
         loadOrdernumbers();
-
-
         storeOrderTotal.setEditable(false);
 
     }
 
     @FXML
     private void loadOrdernumbers() {
-        //StoreOrders thisstoresorders = YourOrderController.getStoreOrders();
         for (Order o : storeOrders.getOrders()) {
             orderNumbercombobox.getItems().add(o.getOrderNumber().toString());
         }
@@ -74,22 +71,33 @@ public class StoreOrderController implements Initializable {
                 currentOrderTotal = o.getOrderFinalTotal();
 
                 // initialize a new map
-                HashMap<DonutFlavor, Integer> order = new HashMap<>();
+                HashMap<Object, Integer> order = new HashMap<>();
 
-                // reduce items in order to flavor selection and amounts
-                for (MenuItem item : o.getOrder()) {
-                    DonutFlavor selectedFlavor = ((Donut) item).getFlavor();
-                    if (order.containsKey(selectedFlavor)) {
-                        order.put(selectedFlavor, order.get(selectedFlavor) + 1);
-                    } else {
-                        order.put(selectedFlavor, 1);
+                for(MenuItem item : o.getOrder()) {
+                    if(item instanceof Donut) {
+                        // handle donut
+                        DonutFlavor selectedFlavor = ((Donut) item).getFlavor();
+                        if(order.containsKey(selectedFlavor)) {
+                            order.put(selectedFlavor, order.get(selectedFlavor) + 1);
+                        } else {
+                            order.put(selectedFlavor, 1);
+                        }
+                    }
+                    // handle coffee
+                    else if(item instanceof Coffee){
+                        String key = item.toString();
+                        if(order.containsKey(key)) {
+                            order.put(key, order.get(key) + 1);
+                        } else {
+                            order.put(key, 1);
+                        }
                     }
                 }
 
                 storeOrderListView.getItems().clear();
 
-                order.forEach((k, v) -> {
-                    storeOrderListView.getItems().add(k.getLabel() + " " + v);
+                order.forEach((k,v) -> {
+                    storeOrderListView.getItems().add(k + " " + v);
                 });
             }
 

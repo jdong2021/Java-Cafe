@@ -40,6 +40,9 @@ public class YourOrderController implements Initializable {
 
     public YourOrderController() {
         yourOrder = OrderController.getCurrentOrder();
+        yourOrder.addListener(change -> {
+            loadSubtotalInfo();
+        });
     }
 
    @FXML
@@ -60,37 +63,15 @@ public class YourOrderController implements Initializable {
                }
            }
            // handle coffee
-           else {
-               if(order.containsKey(item)) {
-                   order.put(item, order.get(item) + 1);
+           else if(item instanceof Coffee){
+               String key = item.toString();
+               if(order.containsKey(key)) {
+                   order.put(key, order.get(key) + 1);
                } else {
-                   order.put(item, 1);
+                   order.put(key, 1);
                }
            }
        }
-
-//       // check if donut
-//       if(currentOrder.getCurrentOrder().get(0) instanceof Donut) {
-//           // reduce items in order to flavor selection and amounts
-//           for(MenuItem item : currentOrder.getCurrentOrder()) {
-//               DonutFlavor selectedFlavor = ((Donut) item).getFlavor();
-//               if(order.containsKey(selectedFlavor)) {
-//                   order.put(selectedFlavor, order.get(selectedFlavor) + 1);
-//               } else {
-//                   order.put(selectedFlavor, 1);
-//               }
-//           }
-//       }
-//       // else is coffee
-//       else {
-//           for(MenuItem item : currentOrder.getCurrentOrder()) {
-//               if(order.containsKey(item)) {
-//                   order.put(item, order.get(item) + 1);
-//               } else {
-//                   order.put(item, 1);
-//               }
-//           }
-//       }
 
        myOrder.getItems().clear();
 
@@ -101,14 +82,13 @@ public class YourOrderController implements Initializable {
 
    @FXML
    public void loadSubtotalInfo(){
-       // yourOrderSubtotal.setText(RoundTo2Decimals(OrderController.getCurrentSubtotal()));
+       yourOrderSubtotal.setText(RoundTo2Decimals(yourOrder.getOrderSubtotal()));
    }
 
    @FXML
    public void loadStoreOrders() throws IOException {
-       // yourOrder.add(OrderController.getCurrentOrder());
-       // OrderController.getCurrentOrder().setTotal(totalTextField.getText());
        StoreOrderController.storeOrders.add(yourOrder);
+       OrderController.setNewOrder();
 
 
        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../view/storeorders.fxml"));

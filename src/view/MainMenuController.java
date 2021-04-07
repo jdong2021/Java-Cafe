@@ -31,8 +31,10 @@ public class MainMenuController implements Initializable {
 
     @FXML
     private Button orderCoffeeBtn;
+
     @FXML
     private Button yourOrderBtn;
+
     @FXML
     private Button storeOrdersBtn;
 
