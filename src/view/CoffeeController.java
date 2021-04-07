@@ -208,12 +208,12 @@ public class CoffeeController extends OrderController implements Initializable {
     /**
      * removes a coffee object from order
      * @param curAmount integer current amount
-     * @param selectedAmount integer selected amount
+     * @param  selectedAmount selected amount
      */
-    private void removeFromOrder(int curAmount, int selectedAMount) {
+    private void removeFromOrder(int curAmount, int selectedAmount) {
         // get array of objects to remove
         Object[] objectsToDelete = tempOrder.getOrder().toArray();
-        objectsToDelete = Arrays.copyOfRange(objectsToDelete, selectedAMount, curAmount);
+        objectsToDelete = Arrays.copyOfRange(objectsToDelete, selectedAmount, curAmount);
         // for each object, delete
         for( Object coffee : objectsToDelete) {
             tempOrder.remove(coffee);
