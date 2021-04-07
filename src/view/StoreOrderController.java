@@ -46,7 +46,7 @@ public class StoreOrderController implements Initializable {
 
     @FXML
     private void loadOrdernumbers() {
-        for (Order o : storeOrders.getOrders()) {
+        for (Order o : storeOrders.getStoreOrders()) {
             orderNumbercombobox.getItems().add(o.getOrderNumber().toString());
         }
     }
@@ -61,7 +61,7 @@ public class StoreOrderController implements Initializable {
         double currentOrderTotal =0;
 
 
-        for (Order o : storeOrders.getOrders()) {
+        for (Order o : storeOrders.getStoreOrders()) {
             if (o.getOrderNumber().equals(currentOrderUUID)) {
                 currentOrderTotal = o.getOrderFinalTotal();
 
@@ -109,7 +109,7 @@ public class StoreOrderController implements Initializable {
         //update total textfield
         currentOrderUUID = UUID.fromString(orderNumbercombobox.getSelectionModel().getSelectedItem());
 
-        for (Order o : storeOrders.getOrders()) {
+        for (Order o : storeOrders.getStoreOrders()) {
             if (o.getOrderNumber().equals(currentOrderUUID)) {
                double currentOrderTotal = o.getOrderFinalTotal();
 
@@ -130,7 +130,7 @@ public class StoreOrderController implements Initializable {
 
         currentOrderUUID = UUID.fromString(orderNumbercombobox.getSelectionModel().getSelectedItem());
 
-        for (Order o : storeOrders.getOrders()) {
+        for (Order o : storeOrders.getStoreOrders()) {
             if (o.getOrderNumber().equals(currentOrderUUID)) {
 
                 Platform.runLater(()-> {
@@ -149,7 +149,7 @@ public class StoreOrderController implements Initializable {
         }
 
 
-        for (Order o : storeOrders.getOrders()) {
+        for (Order o : storeOrders.getStoreOrders()) {
             System.out.println(o.getOrderNumber().toString());
         }
 

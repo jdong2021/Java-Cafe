@@ -7,6 +7,7 @@ import java.util.UUID;
 
 /**
  * Order class is a container class that is designed to hold MenuItem objects and any subclasses of MenuItem.
+ * Implements Customizable interface
  *
  * @author Hugo De Moraes, Jonathan Dong
  */
