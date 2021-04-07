@@ -43,8 +43,12 @@ public class StoreOrderController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        loadOrdernumbers();
         //populate order numbers
+        loadOrdernumbers();
+
+
+        storeOrderTotal.setEditable(false);
+
     }
 
     @FXML
@@ -61,7 +65,7 @@ public class StoreOrderController implements Initializable {
             return;
         }
         currentOrderUUID = UUID.fromString(orderNumbercombobox.getSelectionModel().getSelectedItem());
-      //  StoreOrders thisstoresorders = YourOrderController.getStoreOrders();
+
         double currentOrderTotal =0;
 
 
@@ -106,28 +110,37 @@ public class StoreOrderController implements Initializable {
             if (o.getOrderNumber().equals(currentOrderUUID)) {
                double currentOrderTotal = o.getOrderFinalTotal();
 
-                storeOrderTotal.setText(RoundTo2Decimals(currentOrderTotal));
-                o.setTotal((RoundTo2Decimals(currentOrderTotal)));
+                storeOrderTotal.setText(YourOrderController.RoundTo2Decimals(currentOrderTotal));
+                o.setTotal((YourOrderController.RoundTo2Decimals(currentOrderTotal)));
             }
         }
     }
 
     @FXML
     private void cancelOrder(){
-        //StoreOrders thisstoresorders = YourOrderController.getStoreOrders();
+
+        // if no order is selected then we cannot cancel!
+        if (orderNumbercombobox.getSelectionModel().getSelectedItem() == null){
+            YourOrderController.displayAlert("Error", "No Order Selected ");
+            return;
+        }
+
         currentOrderUUID = UUID.fromString(orderNumbercombobox.getSelectionModel().getSelectedItem());
 
         for (Order o : storeOrders.getOrders()) {
+        for (application.Order o : thisStoresOrders.getOrders()) {
             if (o.getOrderNumber().equals(currentOrderUUID)) {
 
                 Platform.runLater(()-> {
                // System.out.println("removing order");
                         storeOrders.remove(o);
+
+                            storeOrders.remove(o);
                             storeOrderTotal.setText("");
                             storeOrderListView.getItems().clear();
                        });
 
-                //for testing purposes only
+
 
 
             }
@@ -138,12 +151,12 @@ public class StoreOrderController implements Initializable {
             System.out.println(o.getOrderNumber().toString());
         }
 
-      //  Platform.runLater(()-> {
-          //  orderNumbercombobox.getSelectionModel().clearSelection();
-            orderNumbercombobox.getItems().removeAll(orderNumbercombobox.getSelectionModel().getSelectedItem());
-           // loadOrdernumbers();
 
-  //      });
+
+            orderNumbercombobox.getItems().removeAll(orderNumbercombobox.getSelectionModel().getSelectedItem());
+
+
+
 
 
 
@@ -152,6 +165,17 @@ public class StoreOrderController implements Initializable {
 
     @FXML
     private void handleExport(){
+
+
+            if (storeOrders.getOrders().isEmpty()){
+                YourOrderController.displayAlert("Error", "No Store Orders to export");
+                return;
+            }
+
+
+
+
+
         FileChooser chooser = new FileChooser();
         chooser.setTitle("Open Target File for the Export");
         chooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Text Files", "*.txt"),
@@ -162,16 +186,13 @@ public class StoreOrderController implements Initializable {
             //write code to write to the file.
             if (targetFile == null) {
                 //display alert that they must choose file
-               displayAlert("Error exporting", "Please select valid file to export");
+               YourOrderController.displayAlert("Error exporting", "Please select valid file to export");
                return;
             }
 
             FileWriter writer = new FileWriter(targetFile);
-            // loop through all people in company
-//            if (isEmpty()) {
-//                return IoFields.EMPTY_DB_LOG;
-//
-//            }
+            //we wont allow user to export if store orders is blank
+
 
             String output = "";
             for (Order o : storeOrders.getOrders()) {
@@ -203,27 +224,13 @@ public class StoreOrderController implements Initializable {
                         output = output  +(pair.getKey().toString() + " " + pair.getValue().toString() + " ");
                         it.remove();
                     }
-                    output = output + " " +"Total:"+ RoundTo2Decimals(Double.parseDouble(o.getTotal())) + "\n";
+                    output = output + " " +"Total:"+ YourOrderController.RoundTo2Decimals(Double.parseDouble(o.getTotal())) + "\n";
 
 
 
             }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-            System.out.println(output);
             writer.write(output);
             writer.close();
 
@@ -233,26 +240,26 @@ public class StoreOrderController implements Initializable {
     }
 
 
-    private static void displayAlert(String title, String message){
-        Stage alertWindow = new Stage();
-        alertWindow.setTitle(title);
-        alertWindow.setMinWidth(300);
-        Label label = new Label();
-        label.setText(message);
-        Button closeButton = new Button("Close Window");
-        closeButton.setOnAction(e -> alertWindow.close());
-
-        VBox layout = new VBox(10);
-        layout.getChildren().addAll(label,closeButton);
-        layout.setAlignment(Pos.CENTER);
-
-        Scene scene = new Scene(layout);
-        alertWindow.setScene(scene);
-        alertWindow.showAndWait();
-
-    }
-    public String RoundTo2Decimals(double val) {
-        DecimalFormat df2 = new DecimalFormat("##0.00");
-        return (df2.format(val));
-    }
+//    private static void displayAlert(String title, String message){
+//        Stage alertWindow = new Stage();
+//        alertWindow.setTitle(title);
+//        alertWindow.setMinWidth(300);
+//        Label label = new Label();
+//        label.setText(message);
+//        Button closeButton = new Button("Close Window");
+//        closeButton.setOnAction(e -> alertWindow.close());
+//
+//        VBox layout = new VBox(10);
+//        layout.getChildren().addAll(label,closeButton);
+//        layout.setAlignment(Pos.CENTER);
+//
+//        Scene scene = new Scene(layout);
+//        alertWindow.setScene(scene);
+//        alertWindow.showAndWait();
+//
+//    }
+//    public String RoundTo2Decimals(double val) {
+//        DecimalFormat df2 = new DecimalFormat("##0.00");
+//        return (df2.format(val));
+//    }
 }

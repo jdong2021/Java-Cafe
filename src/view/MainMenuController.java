@@ -19,13 +19,18 @@ import javafx.scene.control.Button;
 import javafx.stage.Stage;
 import javafx.scene.control.TextField;
 
+/**
+ * MainMenu Controller handles inputs from GUI regarding ordering donuts, ordering coffee, viewing their current order, and viewing store orders
+ *
+ * @author Hugo De Moraes, Jonathan Dong
+ */
 public class MainMenuController implements Initializable {
 
     @FXML
     private Button orderDonutBtn;
 
     @FXML
-    private Button orderCofeeBtn;
+    private Button orderCoffeeBtn;
     @FXML
     private Button yourOrderBtn;
     @FXML

@@ -4,11 +4,14 @@ import application.*;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -131,7 +134,7 @@ public class YourOrderController implements Initializable {
 
    }
 
-    public String RoundTo2Decimals(double val) {
+    public static String RoundTo2Decimals(double val) {
         DecimalFormat df2 = new DecimalFormat("##0.00");
         return (df2.format(val));
     }
@@ -140,6 +143,12 @@ public class YourOrderController implements Initializable {
     private void removeItem(){
        //iterate thru order to find menuitem to remvoe
         Order currentOrder = OrderController.getCurrentOrder();
+
+        //if there is no selected item to remove
+        if (myOrder.getSelectionModel().getSelectedItem() == null){
+            displayAlert("Error", "No item Selected ");
+            return;
+        }
 
         // get index to split
         // get last occurrence of space character to separate label and amounr
@@ -169,11 +178,35 @@ public class YourOrderController implements Initializable {
         calculatetotal();
    }
 
+    public static void displayAlert(String title, String message){
+        Stage alertWindow = new Stage();
+        alertWindow.setTitle(title);
+        alertWindow.setMinWidth(300);
+        Label label = new Label();
+        label.setText(message);
+        Button closeButton = new Button("Close Window");
+        closeButton.setOnAction(e -> alertWindow.close());
+
+        VBox layout = new VBox(10);
+        layout.getChildren().addAll(label,closeButton);
+        layout.setAlignment(Pos.CENTER);
+
+        Scene scene = new Scene(layout);
+        alertWindow.setScene(scene);
+        alertWindow.showAndWait();
+
+    }
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-            loadOrderInfo();
-            loadSubtotalInfo();
-//            calculatesalestax();
-//            calculatetotal();
+       if(yourOrder != null) {
+           loadOrderInfo();
+           loadSubtotalInfo();
+           calculatesalestax();
+           calculatetotal();
+       }
+
+        yourOrderSubtotal.setEditable(false);
+        salestax.setEditable(false);
+        totalTextField.setEditable(false);
     }
 }

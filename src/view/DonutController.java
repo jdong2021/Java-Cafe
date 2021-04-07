@@ -21,6 +21,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 
+/**
+ * DonutController class handles inputs from the ordering donuts GUI and defines all actions and helper methods relating to events triggered by the GUI
+ *
+ * @author Hugo De Moraes, Jonathan Dong
+ */
 public class DonutController extends OrderController implements Initializable {
     private final String[] AVAILABLE_QUANTITIES = { "1","2","3", "4", "5", "6", "12" };
     private final String MISSING_SELECTION = "Please select a donut";
@@ -53,6 +58,10 @@ public class DonutController extends OrderController implements Initializable {
 
     private Order tempOrder;
 
+    /**
+     * default constructor for DonutController, initializes currentOrder to be a new Order object and triggers adjustSubTotal and adjustCurrentOrderList
+     * when Observable List for Order is changed
+     */
     public DonutController(){
         super();
         tempOrder = new Order();
@@ -62,11 +71,16 @@ public class DonutController extends OrderController implements Initializable {
         });
     }
 
+    /**
+     * adjusts subtotal whenever a menuitem is added or removed
+     */
     private void adjustSubTotal() {
         subtotal = tempOrder.getOrderSubtotal();
-        subTotalField.setText((RoundTo2Decimals(subtotal)));
-    }
+        subTotalField.setText((YourOrderController.RoundTo2Decimals(subtotal))); }
 
+    /**
+     * adjusts order list whenever a menuitem is added or removed
+     */
     private void adjustCurrentOrderList() {
         // initialize a new map
         HashMap<DonutFlavor, Integer> order = new HashMap<>();
@@ -88,23 +102,26 @@ public class DonutController extends OrderController implements Initializable {
         });
     }
 
+    /**
+     * handles actions when adding a Donut to the current temporary order
+     */
     @FXML
     private void addDonutToTemp() {
         // if empty
         if(donutlistView.getSelectionModel().isEmpty()) {
-            displayAlert(ERROR, EMPTY_LIST);
+            YourOrderController.displayAlert(ERROR, EMPTY_LIST);
             return;
         }
 
         // if no donut was selected
         if(donutlistView.getSelectionModel().getSelectedItem() == null) {
-            displayAlert(ERROR, MISSING_SELECTION);
+            YourOrderController.displayAlert(ERROR, MISSING_SELECTION);
             return;
         }
 
         // if no quantity was selected
         if(donutQuantityComboBox.getSelectionModel().getSelectedItem() == null) {
-            displayAlert(ERROR, MISSING_QUANITITY);
+            YourOrderController.displayAlert(ERROR, MISSING_QUANITITY);
             return;
         }
 
@@ -119,17 +136,20 @@ public class DonutController extends OrderController implements Initializable {
         }
     }
 
+    /**
+     * handles actions when user removes donut from current temp order
+     */
     @FXML
     private void removeDonutFromTemp(){
         // if empty
         if(donutPickedlistView.getSelectionModel().isEmpty()) {
-            displayAlert(ERROR, EMPTY_LIST);
+            YourOrderController.displayAlert(ERROR, EMPTY_LIST);
             return;
         }
 
         // if no donut was selected
         if(donutPickedlistView.getSelectionModel().getSelectedItem() == null) {
-            displayAlert(ERROR, MISSING_SELECTION);
+            YourOrderController.displayAlert(ERROR, MISSING_SELECTION);
             return;
         }
 
@@ -156,50 +176,40 @@ public class DonutController extends OrderController implements Initializable {
         }
     }
 
-    private static void displayAlert(String title, String message){
-        Stage alertWindow = new Stage();
-        alertWindow.setTitle(title);
-        alertWindow.setMinWidth(300);
-        Label label = new Label();
-        label.setText(message);
-        Button closeButton = new Button("Close Window");
-        closeButton.setOnAction(e -> alertWindow.close());
-
-        VBox layout = new VBox(10);
-        layout.getChildren().addAll(label,closeButton);
-        layout.setAlignment(Pos.CENTER);
-
-        Scene scene = new Scene(layout);
-        alertWindow.setScene(scene);
-        alertWindow.showAndWait();
-
-    }
-
+    /**
+     * dictates actions after donut GUI is created
+     * @param url url
+     * @param resourceBundle resourcebundle
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         loadDonutType();
         loadDonutQuantity();
+        subTotalField.setEditable(false);
     }
 
-
+    /**
+     * pulls up the your order GUI after user presses Add to Order button
+     * @throws IOException
+     */
     @FXML
     private void loadyourOrder() throws IOException {
 
         // if empty
         if(donutlistView.getSelectionModel().isEmpty()) {
-            displayAlert(ERROR, EMPTY_LIST);
+            YourOrderController.displayAlert(ERROR, EMPTY_LIST);
             return;
         }
 
         // if no donut was selected
         if(donutlistView.getSelectionModel().getSelectedItem() == null) {
-            displayAlert(ERROR, MISSING_SELECTION);
+            YourOrderController.displayAlert(ERROR, MISSING_SELECTION);
             return;
         }
 
         // if no quantity was selected
         if(donutQuantityComboBox.getSelectionModel().getSelectedItem() == null) {
-            displayAlert(ERROR, MISSING_QUANITITY);
+            YourOrderController.displayAlert(ERROR, MISSING_QUANITITY);
             return;
         }
 
@@ -216,6 +226,9 @@ public class DonutController extends OrderController implements Initializable {
         stage.close();
     }
 
+    /**
+     * populates the donutTypes in donutTypeComboBox
+     */
     @FXML
     private void loadDonutType(){
         for(DonutType type : DonutType.values()) {
@@ -223,6 +236,9 @@ public class DonutController extends OrderController implements Initializable {
         }
     }
 
+    /**
+     * populates the donut quantities in donutQuantityComboBox
+     */
     @FXML
     private void loadDonutQuantity(){
         for(String amount : AVAILABLE_QUANTITIES) {
@@ -231,6 +247,10 @@ public class DonutController extends OrderController implements Initializable {
         donutQuantityComboBox.setPromptText("Quantity");
     }
 
+    /**
+     * displays appropriate donut flavors after donut type has been selected
+     * @param event
+     */
     @FXML
     private void handleSelectDonutType(ActionEvent event){
         final DonutType SELECTED_DONUT_TYPE = DonutType.getTypeByLabel(donutTypeComboBox.getValue());
